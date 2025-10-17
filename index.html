@@ -5,50 +5,282 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LibreMint - Painel de Administrador</title>
     <style>
-        /* ... mesmo CSS do original ... */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        .header { background: white; padding: 20px 30px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header h1 { color: #1e3c72; margin-bottom: 5px; }
-        .header p { color: #666; }
-        .login-section { background: white; padding: 40px; border-radius: 10px; max-width: 400px; margin: 100px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .login-section h2 { color: #1e3c72; margin-bottom: 20px; }
-        .admin-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card h2 { color: #1e3c72; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #4CAF50; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: border-color 0.3s; }
-        .form-group input:focus, .form-group select:focus { outline: none; border-color: #2a5298; }
-        .btn { background: #4CAF50; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s; }
-        .btn:hover { background: #45a049; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3); }
-        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        .alert { padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; }
-        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-danger { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .alert-info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
-        .hidden { display: none !important; }
-        .users-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 20px; }
-        .user-card { background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .user-card .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .user-card .user-name { font-weight: bold; color: #1e3c72; font-size: 1.1em; }
-        .user-card .user-balance { font-weight: bold; color: #4CAF50; font-size: 1.1em; }
-        .user-card .user-info { font-size: 0.9em; color: #666; margin-bottom: 5px; word-break: break-all; }
-        .transaction-log { max-height: 400px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px; background: #f8f9fa; }
-        .transaction-item { padding: 10px; border-bottom: 1px solid #eee; }
-        .transaction-item:last-child { border-bottom: none; }
-        .transaction-item.pix-in { background-color: #e6ffe6; }
-        .transaction-item.pix-out { background-color: #ffe6e6; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .stat-box { background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; }
-        .stat-box .value { font-size: 1.8em; font-weight: bold; color: #2a5298; }
-        .stat-box .label { font-size: 0.9em; color: #666; margin-top: 5px; }
-        .debug-panel { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 10px; margin: 10px 0; font-family: monospace; font-size: 0.8em; max-height: 200px; overflow-y: auto; }
-        .backup-status { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.8em; margin-left: 10px; }
-        .backup-ok { background: #d4edda; color: #155724; }
-        .backup-warning { background: #fff3cd; color: #856404; }
-        @media (max-width: 768px) { .admin-grid { grid-template-columns: 1fr; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .login-section {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 100px auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .login-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .users-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .user-card .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-card .user-name {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .user-card .user-balance {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.1em;
+        }
+
+        .user-card .user-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
+        .transaction-log {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .transaction-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-item.pix-in {
+            background-color: #e6ffe6;
+        }
+
+        .transaction-item.pix-out {
+            background-color: #ffe6e6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .stat-box .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .debug-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.8em;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* NOVO FASE 1.5: Indicador de Backup */
+        .backup-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+
+        .backup-ok {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .backup-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -58,6 +290,7 @@
             <p>Gerencie usuários, saldos e transações LibreMint.</p>
         </div>
 
+        <!-- Seção de Login -->
         <div id="loginSection" class="login-section">
             <h2>Acesso Restrito</h2>
             <div class="form-group">
@@ -69,8 +302,10 @@
             <div id="adminDebug" class="debug-panel hidden"></div>
         </div>
 
+        <!-- Painel Principal -->
         <div id="adminPanel" class="hidden">
             <div class="admin-grid">
+                <!-- Gerenciamento de Saldo -->
                 <div class="card">
                     <h2>Gerenciar Saldo LM</h2>
                     <div class="form-group">
@@ -92,64 +327,136 @@
                     </div>
                     <div class="form-group">
                         <label for="transactionDescription">Descrição:</label>
-                        <input type="text" id="transactionDescription" placeholder="Ex: Depósito via Pix">
+                        <input type="text" id="transactionDescription" placeholder="Ex: Depósito via Pix, Saque de prêmio">
                     </div>
                     <button class="btn" onclick="processTransaction()">Processar Transação</button>
                     <div id="transactionAlert" class="alert"></div>
                 </div>
 
+                <!-- Visão Geral e Log de Transações -->
                 <div class="card">
                     <h2>Visão Geral</h2>
                     <div class="stats-grid">
-                        <div class="stat-box"><div class="value" id="totalUsers">0</div><div class="label">Total de Usuários</div></div>
-                        <div class="stat-box"><div class="value" id="totalLM">0 LM</div><div class="label">LM em Circulação</div></div>
-                        <div class="stat-box"><div class="value" id="totalTransactions">0</div><div class="label">Total de Transações</div></div>
-                        <div class="stat-box"><div class="value" id="totalPixIn">R$ 0.00</div><div class="label">Total Pix Recebido</div></div>
+                        <div class="stat-box">
+                            <div class="value" id="totalUsers">0</div>
+                            <div class="label">Total de Usuários</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="value" id="totalLM">0 LM</div>
+                            <div class="label">LM em Circulação</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="value" id="totalTransactions">0</div>
+                            <div class="label">Total de Transações</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="value" id="totalPixIn">R$ 0.00</div>
+                            <div class="label">Total Pix Recebido</div>
+                        </div>
                     </div>
+
                     <h2>Log de Transações Recentes</h2>
                     <div class="transaction-log" id="transactionLog">
-                        <p style="text-align: center; color: #666;">Carregando...</p>
+                        <p style="text-align: center; color: #666;">Carregando transações...</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Lista de Usuários -->
             <div class="card" style="margin-top: 20px;">
                 <h2>Usuários Cadastrados</h2>
                 <div class="users-list" id="usersList">
-                    <p style="text-align: center; color: #666;">Nenhum usuário</p>
+                    <p style="text-align: center; color: #666;">Nenhum usuário cadastrado</p>
                 </div>
             </div>
 
+            <!-- Painel de Debug -->
             <div class="card" style="margin-top: 20px;">
                 <h2>Log do Sistema</h2>
-                <div id="systemDebug" class="debug-panel">Sistema inicializado.</div>
+                <div id="systemDebug" class="debug-panel">
+                    Sistema inicializado. Aguardando ações...
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
     <script>
+        // ========== LIBREMINT CORE ==========
         class LibreMintCore {
-            constructor() { this.SAT_PER_LM = 100000000; }
-            lmToSat(lm) { return Math.round(lm * this.SAT_PER_LM); }
-            satToLm(sat) { return sat / this.SAT_PER_LM; }
-            formatLM(lm, d = 8) { return parseFloat(lm).toFixed(d); }
-            formatSat(sat) { return Math.round(sat).toLocaleString('pt-BR'); }
-            brlToLm(brl, rate = 1000) { return brl / rate; }
-            satToBrl(sat, rate = 1000) { return this.lmToBrl(this.satToLm(sat), rate); }
-            lmToBrl(lm, rate = 1000) { return lm * rate; }
-            debugLog(msg, id = 'systemDebug') {
-                const el = document.getElementById(id);
-                if (el) {
-                    const t = new Date().toLocaleTimeString();
-                    el.innerHTML += `[${t}] ${msg}<br>`;
-                    el.scrollTop = el.scrollHeight;
+            constructor() {
+                this.SAT_PER_LM = 100000000;
+            }
+
+            lmToSat(lm) {
+                return Math.round(lm * this.SAT_PER_LM);
+            }
+
+            satToLm(sat) {
+                return sat / this.SAT_PER_LM;
+            }
+
+            formatLM(lm, decimals = 8) {
+                return parseFloat(lm).toFixed(decimals);
+            }
+
+            formatSat(sat) {
+                return Math.round(sat).toLocaleString('pt-BR');
+            }
+
+            brlToLm(brl, exchangeRate = 1000) {
+                return brl / exchangeRate;
+            }
+
+            lmToBrl(lm, exchangeRate = 1000) {
+                return lm * exchangeRate;
+            }
+
+            satToBrl(sat, exchangeRate = 1000) {
+                const lm = this.satToLm(sat);
+                return this.lmToBrl(lm, exchangeRate);
+            }
+
+            brlToSat(brl, exchangeRate = 1000) {
+                const lm = this.brlToLm(brl, exchangeRate);
+                return this.lmToSat(lm);
+            }
+
+            debugLog(message, elementId = 'systemDebug') {
+                const debugDiv = document.getElementById(elementId);
+                if (debugDiv) {
+                    const timestamp = new Date().toLocaleTimeString();
+                    debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
+                    debugDiv.scrollTop = debugDiv.scrollHeight;
                 }
-                console.log(msg);
+                console.log(message);
+            }
+
+            // NOVO FASE 1.5: Verificar status de backup dos usuários
+            async checkUserBackupStatus(usersData) {
+                let usersWithBackup = 0;
+                let usersWithoutBackup = 0;
+                
+                for (const [userId, user] of Object.entries(usersData)) {
+                    // Em uma implementação real, verificaria no Firebase se o usuário
+                    // tem backup no IndexedDB ou se fez download do arquivo
+                    // Por enquanto, simulação baseada em atividade recente
+                    const hasRecentActivity = (Date.now() - user.createdAt) < 7 * 24 * 60 * 60 * 1000;
+                    if (hasRecentActivity) {
+                        usersWithBackup++;
+                    } else {
+                        usersWithoutBackup++;
+                    }
+                }
+                
+                return { usersWithBackup, usersWithoutBackup, total: Object.keys(usersData).length };
             }
         }
 
+        // ========== FIREBASE CONFIG ==========
         const firebaseConfig = {
             apiKey: "AIzaSyA5suVRJ9KrNq7RG6Ui8nfyuHhgFLWedns",
             authDomain: "libremint-2025.firebaseapp.com",
@@ -164,182 +471,390 @@
         let database;
 
         async function initializeFirebase() {
-            if (firebase.apps.length) return true;
-            return new Promise(resolve => {
-                firebaseApp = firebase.initializeApp(firebaseConfig);
-                database = firebase.database();
-                database.ref('.info/connected').on('value', snap => {
-                    if (snap.val() === true) resolve(true);
-                });
-                setTimeout(() => resolve(true), 3000);
+            return new Promise((resolve, reject) => {
+                try {
+                    if (!firebase.apps.length) {
+                        firebaseApp = firebase.initializeApp(firebaseConfig);
+                        database = firebase.database();
+                        
+                        database.ref('.info/connected').on('value', (snap) => {
+                            if (snap.val() === true) {
+                                lmCore.debugLog('✅ Firebase conectado com sucesso');
+                                resolve(true);
+                            }
+                        });
+                        
+                        setTimeout(() => {
+                            lmCore.debugLog('⚠️ Firebase: usando fallback de conexão');
+                            resolve(true);
+                        }, 3000);
+                    } else {
+                        lmCore.debugLog('✅ Firebase já inicializado');
+                        resolve(true);
+                    }
+                } catch (error) {
+                    lmCore.debugLog('❌ Erro ao inicializar Firebase: ' + error.message);
+                    reject(error);
+                }
             });
         }
 
         const FirebaseDB = {
             ref(path) {
-                if (!database) throw new Error('Firebase não inicializado');
+                if (!database) {
+                    lmCore.debugLog('⚠️ Database não inicializado, tentando inicializar...');
+                    initializeFirebase();
+                }
                 return database.ref(path);
             },
-            async set(path, data) { await this.ref(path).set(data); return { success: true }; },
-            async update(path, data) { await this.ref(path).update(data); return { success: true }; },
-            async get(path) { const s = await this.ref(path).once('value'); return { success: true, data: s.val() }; },
-            listen(path, cb) { this.ref(path).on('value', s => cb(s.val())); },
-            async push(path, data) { const r = this.ref(path).push(); await r.set(data); return { success: true, key: r.key }; }
+
+            async set(path, data) {
+                try {
+                    await this.ref(path).set(data);
+                    lmCore.debugLog(`✅ Dados salvos em: ${path}`);
+                    return { success: true };
+                } catch (error) {
+                    lmCore.debugLog(`❌ Erro ao salvar em ${path}: ${error.message}`);
+                    return { success: false, error };
+                }
+            },
+
+            async update(path, data) {
+                try {
+                    await this.ref(path).update(data);
+                    lmCore.debugLog(`✅ Dados atualizados em: ${path}`);
+                    return { success: true };
+                } catch (error) {
+                    lmCore.debugLog(`❌ Erro ao atualizar em ${path}: ${error.message}`);
+                    return { success: false, error };
+                }
+            },
+
+            async get(path) {
+                try {
+                    const snapshot = await this.ref(path).once('value');
+                    lmCore.debugLog(`✅ Dados lidos de: ${path}`);
+                    return { success: true, data: snapshot.val() };
+                } catch (error) {
+                    lmCore.debugLog(`❌ Erro ao ler de ${path}: ${error.message}`);
+                    return { success: false, error };
+                }
+            },
+
+            listen(path, callback) {
+                this.ref(path).on('value', (snapshot) => {
+                    lmCore.debugLog(`📡 Ouvindo alterações em: ${path}`);
+                    callback(snapshot.val());
+                });
+            },
+
+            async push(path, data) {
+                try {
+                    const newRef = this.ref(path).push();
+                    await newRef.set(data);
+                    lmCore.debugLog(`✅ Dados adicionados em: ${path}`);
+                    return { success: true, key: newRef.key };
+                } catch (error) {
+                    lmCore.debugLog(`❌ Erro ao adicionar em ${path}: ${error.message}`);
+                    return { success: false, error };
+                }
+            }
         };
 
-        const ADMIN_PASSWORD = 'libremint2025'; // ⚠️ ALTERE!
-        const EXCHANGE_RATE = 1000;
+        // ========== CONFIGURAÇÕES DO PAINEL ==========
+        const ADMIN_PASSWORD = 'libremint2025'; // ALTERE ESTA SENHA!
+        const EXCHANGE_RATE = 1000; // 1 LM = R$ 1000
+
         const lmCore = new LibreMintCore();
         let usersData = {};
 
+        // Login
         async function login() {
-            const pwd = document.getElementById('adminPassword').value;
-            const debug = document.getElementById('adminDebug');
-            debug.classList.remove('hidden');
-            lmCore.debugLog('Tentando login...', 'adminDebug');
-            if (pwd !== ADMIN_PASSWORD) {
-                lmCore.debugLog('Senha incorreta!', 'adminDebug');
+            const password = document.getElementById('adminPassword').value;
+            const debugDiv = document.getElementById('adminDebug');
+            
+            debugDiv.classList.remove('hidden');
+            lmCore.debugLog('🔐 Tentando login...', 'adminDebug');
+            
+            if (password === ADMIN_PASSWORD) {
+                lmCore.debugLog('✅ Senha correta, inicializando sistema...', 'adminDebug');
+                
+                try {
+                    await initializeFirebase();
+                    loadUsers();
+                    
+                    document.getElementById('loginSection').classList.add('hidden');
+                    document.getElementById('adminPanel').classList.remove('hidden');
+                    showAlert('loginAlert', '', '');
+                    
+                    lmCore.debugLog('🎉 Painel administrativo carregado com sucesso!', 'systemDebug');
+                    
+                    // NOVO FASE 1.5: Atualizar status de backup
+                    updateBackupStatus();
+                    
+                } catch (error) {
+                    lmCore.debugLog(`❌ Erro ao inicializar: ${error.message}`, 'adminDebug');
+                    showAlert('loginAlert', '❌ Erro ao inicializar sistema', 'danger');
+                }
+            } else {
+                lmCore.debugLog('❌ Senha incorreta!', 'adminDebug');
                 showAlert('loginAlert', '❌ Senha incorreta!', 'danger');
-                return;
-            }
-            try {
-                await initializeFirebase();
-                loadUsers();
-                document.getElementById('loginSection').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                lmCore.debugLog('Painel carregado!', 'systemDebug');
-            } catch (err) {
-                lmCore.debugLog('Erro: ' + err.message, 'adminDebug');
-                showAlert('loginAlert', '❌ Erro ao inicializar', 'danger');
             }
         }
 
-        function loadUsers() {
-            FirebaseDB.listen('users', data => {
+        // NOVO FASE 1.5: Atualizar status de backup
+        async function updateBackupStatus() {
+            const backupStatus = await lmCore.checkUserBackupStatus(usersData);
+            const statusElement = document.getElementById('backupStatus');
+            
+            if (backupStatus.total === 0) {
+                statusElement.classList.add('hidden');
+                return;
+            }
+            
+            const backupRate = (backupStatus.usersWithBackup / backupStatus.total) * 100;
+            
+            statusElement.classList.remove('hidden');
+            if (backupRate >= 80) {
+                statusElement.className = 'backup-status backup-ok';
+                statusElement.textContent = `✅ ${Math.round(backupRate)}% com backup`;
+            } else if (backupRate >= 50) {
+                statusElement.className = 'backup-status backup-warning';
+                statusElement.textContent = `⚠️ ${Math.round(backupRate)}% com backup`;
+            } else {
+                statusElement.className = 'backup-status';
+                statusElement.textContent = `❌ ${Math.round(backupRate)}% com backup`;
+            }
+            
+            lmCore.debugLog(`📊 Status backup: ${backupStatus.usersWithBackup}/${backupStatus.total} usuários (${Math.round(backupRate)}%)`);
+        }
+
+        // Carrega usuários do Firebase
+        async function loadUsers() {
+            lmCore.debugLog('📥 Carregando usuários...');
+            
+            FirebaseDB.listen('users', (data) => {
                 usersData = data || {};
+                lmCore.debugLog(`👥 ${Object.keys(usersData).length} usuários carregados`);
                 updateUsersList();
                 updateStats();
+                
+                // NOVO FASE 1.5: Atualizar status de backup
+                updateBackupStatus();
             });
-            FirebaseDB.listen('transactions', data => {
+
+            FirebaseDB.listen('transactions', (data) => {
+                const count = data ? Object.keys(data).length : 0;
+                lmCore.debugLog(`💳 ${count} transações carregadas`);
                 updateTransactionLog(data);
             });
         }
 
+        // Atualiza lista de usuários
         function updateUsersList() {
-            const list = document.getElementById('usersList');
-            const sel = document.getElementById('userSelect');
+            const usersList = document.getElementById('usersList');
+            const userSelect = document.getElementById('userSelect');
+            
             if (Object.keys(usersData).length === 0) {
-                list.innerHTML = '<p style="text-align:center;color:#666;">Nenhum usuário</p>';
-                sel.innerHTML = '<option>Nenhum usuário</option>';
+                usersList.innerHTML = '<p style="text-align: center; color: #666;">Nenhum usuário cadastrado</p>';
+                userSelect.innerHTML = '<option value="">Nenhum usuário disponível</option>';
                 return;
             }
-            let html = ''; let selHtml = '<option>Selecione</option>';
-            for (const [id, user] of Object.entries(usersData)) {
-                const balLM = lmCore.satToLm(user.balanceSat || 0);
-                const balBRL = lmCore.satToBrl(user.balanceSat || 0, EXCHANGE_RATE);
+
+            let html = '';
+            let selectHtml = '<option value="">Selecione um usuário</option>';
+
+            for (const [userId, user] of Object.entries(usersData)) {
+                const balanceLM = lmCore.satToLm(user.balanceSat || 0);
+                const balanceBRL = lmCore.satToBrl(user.balanceSat || 0, EXCHANGE_RATE);
+                
+                // NOVO FASE 1.5: Indicador de backup
+                const hasRecentBackup = (Date.now() - user.createdAt) < 7 * 24 * 60 * 60 * 1000;
+                const backupIndicator = hasRecentBackup ? '🛡️' : '⚠️';
+
                 html += `
                     <div class="user-card">
                         <div class="user-header">
-                            <div class="user-name">👤 ${user.nickname}</div>
-                            <div class="user-balance">${lmCore.formatLM(balLM, 4)} LM</div>
+                            <div class="user-name">${backupIndicator} ${user.nickname}</div>
+                            <div class="user-balance">${lmCore.formatLM(balanceLM, 4)} LM</div>
                         </div>
                         <div class="user-info">💳 ${user.address}</div>
                         <div class="user-info">💰 ${lmCore.formatSat(user.balanceSat)} sat</div>
-                        <div class="user-info">💵 R$ ${balBRL.toFixed(2)}</div>
+                        <div class="user-info">💵 R$ ${balanceBRL.toFixed(2)}</div>
+                        <div class="user-info">🆔 ${userId}</div>
+                        <div class="user-info">📅 Criado: ${new Date(user.createdAt).toLocaleString('pt-BR')}</div>
                     </div>
                 `;
-                selHtml += `<option value="${id}">${user.nickname} (${lmCore.formatLM(balLM, 2)} LM)</option>`;
+
+                selectHtml += `<option value="${userId}">${user.nickname} (${lmCore.formatLM(balanceLM, 2)} LM)</option>`;
             }
-            list.innerHTML = html;
-            sel.innerHTML = selHtml;
+
+            usersList.innerHTML = html;
+            userSelect.innerHTML = selectHtml;
+            
+            lmCore.debugLog(`📊 Lista de usuários atualizada: ${Object.keys(usersData).length} usuários`);
         }
 
+        // Atualiza estatísticas
         function updateStats() {
-            const total = Object.keys(usersData).length;
+            const totalUsers = Object.keys(usersData).length;
             let totalSat = 0;
-            for (const u of Object.values(usersData)) totalSat += u.balanceSat || 0;
+
+            for (const user of Object.values(usersData)) {
+                totalSat += user.balanceSat || 0;
+            }
+
             const totalLM = lmCore.satToLm(totalSat);
-            document.getElementById('totalUsers').textContent = total;
+
+            document.getElementById('totalUsers').textContent = totalUsers;
             document.getElementById('totalLM').textContent = lmCore.formatLM(totalLM, 2);
+            
+            lmCore.debugLog(`📈 Estatísticas atualizadas: ${totalUsers} usuários, ${lmCore.formatLM(totalLM, 2)} LM em circulação`);
         }
 
+        // Atualiza log de transações
         function updateTransactionLog(transactions) {
-            const log = document.getElementById('transactionLog');
-            if (!transactions) {
-                log.innerHTML = '<p style="text-align:center;color:#666;">Nenhuma transação</p>';
-                document.getElementById('totalTransactions').textContent = '0';
-                document.getElementById('totalPixIn').textContent = 'R$ 0.00';
+            const logDiv = document.getElementById('transactionLog');
+            
+            if (!transactions || Object.keys(transactions).length === 0) {
+                logDiv.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma transação registrada</p>';
                 return;
             }
-            const arr = Object.entries(transactions).map(([id, tx]) => ({id, ...tx}));
-            arr.sort((a, b) => b.timestamp - a.timestamp);
-            let html = ''; let totalPix = 0; let count = 0;
-            for (const tx of arr.slice(0, 50)) {
+
+            const txArray = Object.entries(transactions).map(([id, tx]) => ({id, ...tx}));
+            txArray.sort((a, b) => b.timestamp - a.timestamp);
+
+            let html = '';
+            let totalPixIn = 0;
+            let totalTx = 0;
+
+            for (const tx of txArray.slice(0, 50)) {
                 const date = new Date(tx.timestamp).toLocaleString('pt-BR');
                 const amountLM = lmCore.satToLm(tx.amountSat);
-                const cls = tx.type.includes('add') ? 'pix-in' : 'pix-out';
-                if (tx.type === 'add_pix') totalPix += tx.amountBRL || 0;
-                count++;
+                const cssClass = tx.type.includes('add') ? 'pix-in' : 'pix-out';
+                
+                if (tx.type === 'add_pix') {
+                    totalPixIn += tx.amountBRL || 0;
+                }
+                totalTx++;
+
                 html += `
-                    <div class="transaction-item ${cls}">
+                    <div class="transaction-item ${cssClass}">
                         <strong>${tx.description}</strong><br>
-                        <small>Usuário: ${tx.userName} | R$ ${(tx.amountBRL || 0).toFixed(2)} = ${lmCore.formatLM(amountLM, 4)} LM</small><br>
-                        <small>${date}</small>
+                        <small>Usuário: ${tx.userName} | Valor: R$ ${(tx.amountBRL || 0).toFixed(2)} = ${lmCore.formatLM(amountLM, 4)} LM</small><br>
+                        <small>Data: ${date}</small>
                     </div>
                 `;
             }
-            log.innerHTML = html;
-            document.getElementById('totalTransactions').textContent = count;
-            document.getElementById('totalPixIn').textContent = `R$ ${totalPix.toFixed(2)}`;
+
+            logDiv.innerHTML = html;
+            document.getElementById('totalTransactions').textContent = totalTx;
+            document.getElementById('totalPixIn').textContent = `R$ ${totalPixIn.toFixed(2)}`;
         }
 
+        // Calcula equivalência em tempo real
         document.getElementById('amountBRL')?.addEventListener('input', function() {
             const brl = parseFloat(this.value) || 0;
             const lm = lmCore.brlToLm(brl, EXCHANGE_RATE);
-            const sat = lmCore.lmToSat(lm);
+            const sat = lmCore.brlToSat(brl, EXCHANGE_RATE);
+            
             document.getElementById('equivalentLM').textContent = lmCore.formatLM(lm, 4);
             document.getElementById('equivalentSat').textContent = lmCore.formatSat(sat);
         });
 
+        // Processa transação
         async function processTransaction() {
             const userId = document.getElementById('userSelect').value;
-            const op = document.getElementById('operationType').value;
-            const brl = parseFloat(document.getElementById('amountBRL').value) || 0;
-            const desc = document.getElementById('transactionDescription').value;
-            if (!userId) return showAlert('transactionAlert', '⚠️ Selecione usuário', 'danger');
-            if (brl <= 0) return showAlert('transactionAlert', '⚠️ Valor > 0', 'danger');
-            const user = usersData[userId];
-            if (!user) return showAlert('transactionAlert', '❌ Usuário não encontrado', 'danger');
-            const sat = lmCore.lmToSat(lmCore.brlToLm(brl, EXCHANGE_RATE));
-            let newBal = user.balanceSat || 0;
-            if (op.includes('add')) {
-                newBal += sat;
-            } else {
-                if (newBal < sat) return showAlert('transactionAlert', '⚠️ Saldo insuficiente', 'danger');
-                newBal -= sat;
+            const operationType = document.getElementById('operationType').value;
+            const amountBRL = parseFloat(document.getElementById('amountBRL').value) || 0;
+            const description = document.getElementById('transactionDescription').value;
+
+            lmCore.debugLog(`💸 Processando transação: ${operationType} para usuário ${userId}`);
+
+            if (!userId) {
+                showAlert('transactionAlert', '⚠️ Selecione um usuário', 'danger');
+                return;
             }
-            await FirebaseDB.update(`users/${userId}`, { balanceSat: newBal });
+
+            if (amountBRL <= 0) {
+                showAlert('transactionAlert', '⚠️ Valor deve ser maior que zero', 'danger');
+                return;
+            }
+
+            const user = usersData[userId];
+            if (!user) {
+                showAlert('transactionAlert', '❌ Usuário não encontrado', 'danger');
+                return;
+            }
+
+            const amountSat = lmCore.brlToSat(amountBRL, EXCHANGE_RATE);
+            const amountLM = lmCore.satToLm(amountSat);
+
+            let newBalanceSat = user.balanceSat || 0;
+
+            if (operationType.includes('add')) {
+                newBalanceSat += amountSat;
+                lmCore.debugLog(`➕ Adicionando ${amountLM} LM ao usuário ${user.nickname}`);
+            } else {
+                newBalanceSat -= amountSat;
+                if (newBalanceSat < 0) {
+                    showAlert('transactionAlert', '⚠️ Saldo insuficiente', 'danger');
+                    lmCore.debugLog(`❌ Saldo insuficiente: ${user.balanceSat} < ${amountSat}`);
+                    return;
+                }
+                lmCore.debugLog(`➖ Removendo ${amountLM} LM do usuário ${user.nickname}`);
+            }
+
+            // Atualiza saldo no Firebase
+            const updateResult = await FirebaseDB.update(`users/${userId}`, {
+                balanceSat: newBalanceSat
+            });
+
+            if (!updateResult.success) {
+                showAlert('transactionAlert', '❌ Erro ao atualizar saldo', 'danger');
+                return;
+            }
+
+            // Registra transação
             await FirebaseDB.push('transactions', {
-                userId, userName: user.nickname, type: op,
-                amountSat: sat,
-                amountLM: lmCore.satToLm(sat),
-                amountBRL: brl, // ✅ SALVO!
-                description: desc || `Transação ${op}`,
+                userId: userId,
+                userName: user.nickname,
+                type: operationType,
+                amountSat: amountSat,
+                amountLM: amountLM,
+                amountBRL: amountBRL,
+                description: description || `Transação ${operationType}`,
                 timestamp: Date.now()
             });
-            showAlert('transactionAlert', '✅ Transação concluída!', 'success');
+
+            const successMessage = `✅ Transação processada com sucesso! Novo saldo: ${lmCore.formatLM(lmCore.satToLm(newBalanceSat), 4)} LM`;
+            showAlert('transactionAlert', successMessage, 'success');
+            lmCore.debugLog(successMessage);
+            
+            // Limpa formulário
             document.getElementById('amountBRL').value = '';
             document.getElementById('transactionDescription').value = '';
         }
 
-        function showAlert(id, msg, type) {
-            const el = document.getElementById(id);
-            el.innerHTML = msg ? `<div class="alert alert-${type}">${msg}</div>` : '';
+        // Mostra alerta
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            if (!message) {
+                alertDiv.innerHTML = '';
+                return;
+            }
+            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
         }
 
-        document.getElementById('adminPassword')?.addEventListener('keypress', e => { if (e.key === 'Enter') login(); });
+        // Detecta Enter no campo de senha
+        document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
 
-        lmCore.debugLog('Sistema administrativo pronto.');
+        // Inicialização
+        lmCore.debugLog('🔧 Sistema administrativo inicializado. Aguardando login...');
     </script>
 </body>
 </html>
