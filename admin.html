@@ -29,7 +29,6 @@
             border-radius: 10px;
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
         }
 
         .header h1 {
@@ -258,7 +257,6 @@
             overflow-y: auto;
         }
 
-        /* NOVO FASE 1.5: Indicador de Backup */
         .backup-status {
             display: inline-block;
             padding: 4px 8px;
@@ -277,30 +275,9 @@
             color: #856404;
         }
 
-        .backup-critical {
+        .backup-danger {
             background: #f8d7da;
             color: #721c24;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-        }
-
-        .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1e3c72;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 2s linear infinite;
-            margin: 0 auto 15px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         .mission-card {
@@ -310,7 +287,7 @@
 
         .mission-card h2 {
             color: white;
-            border-bottom-color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
         }
 
         .mission-content {
@@ -323,25 +300,7 @@
         }
 
         .mission-content li {
-            margin-bottom: 8px;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            border-top: 1px solid #dee2e6;
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .copyright a {
-            color: #1e3c72;
-            text-decoration: none;
-        }
-
-        .copyright a:hover {
-            text-decoration: underline;
+            margin: 8px 0;
         }
 
         @media (max-width: 768px) {
@@ -368,32 +327,11 @@
             <button class="btn" onclick="login()">Entrar</button>
             <div id="loginAlert" class="alert"></div>
             <div id="adminDebug" class="debug-panel hidden"></div>
-
-            <div class="copyright">
-                LibreMint © 2025 Carlos Alberto Reis - 
-                <a href="#" onclick="showManifesto()">Manifesto de Liberdade Financeira</a> | 
-                Código Livre - Ideias Livres - Pessoas Livres
-            </div>
-
-
-
-        <div style="text-align: center; margin-top: 10px;">
-            <small>
-                <a href="admin.html" style="color: #666; text-decoration: none;">
-                    🔧 Acesso Administrativo
-                </a>
-            </small>
-        </div>
-
-
-
-
-
         </div>
 
         <!-- Painel Principal -->
         <div id="adminPanel" class="hidden">
-            <!-- Card de Missão -->
+            <!-- Missão LibreMint -->
             <div class="card mission-card">
                 <h2>🏴 Missão LibreMint</h2>
                 <div class="mission-content">
@@ -409,7 +347,7 @@
                     <p><strong>Nosso campo de batalha:</strong> O sistema financeiro brasileiro</p>
                     <p><strong>Nosso objetivo:</strong> Empoderamento financeiro real do cidadão</p>
                     
-                    <div class="alert alert-info" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);">
+                    <div class="alert alert-info" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);">
                         <strong>⚠️ AVISO:</strong> Como administrador, você é guardião desta missão. 
                         Toda transação deve refletir nossos valores de transparência e justiça.
                     </div>
@@ -422,9 +360,7 @@
                     <h2>Gerenciar Saldo LM</h2>
                     <div class="form-group">
                         <label for="userSelect">Usuário:</label>
-                        <select id="userSelect">
-                            <option value="">Carregando usuários...</option>
-                        </select>
+                        <select id="userSelect"></select>
                     </div>
                     <div class="form-group">
                         <label for="operationType">Tipo de Operação:</label>
@@ -445,18 +381,6 @@
                     </div>
                     <button class="btn" onclick="processTransaction()">Processar Transação</button>
                     <div id="transactionAlert" class="alert"></div>
-
-
-
-
-                    <button class="btn-secondary" onclick="window.location.href='index.html'" 
-                            style="margin-top: 10px; width: 100%;">
-                        ← Voltar para Raspadinha
-                    </button>
-
-
-
-
                 </div>
 
                 <!-- Visão Geral e Log de Transações -->
@@ -483,10 +407,7 @@
 
                     <h2>Log de Transações Recentes</h2>
                     <div class="transaction-log" id="transactionLog">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Carregando transações...</p>
-                        </div>
+                        <p style="text-align: center; color: #666;">Carregando transações...</p>
                     </div>
                 </div>
             </div>
@@ -495,10 +416,7 @@
             <div class="card" style="margin-top: 20px;">
                 <h2>Usuários Cadastrados</h2>
                 <div class="users-list" id="usersList">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p>Carregando usuários...</p>
-                    </div>
+                    <p style="text-align: center; color: #666;">Nenhum usuário cadastrado</p>
                 </div>
             </div>
 
@@ -506,41 +424,18 @@
             <div class="card" style="margin-top: 20px;">
                 <h2>Log do Sistema</h2>
                 <div id="systemDebug" class="debug-panel">
-                    Sistema inicializado. Aguardando login...
+                    Sistema inicializado. Aguardando ações...
                 </div>
             </div>
-
-            <div class="copyright">
-                LibreMint © 2025 Carlos Alberto Reis - 
-                <a href="#" onclick="showManifesto()">Manifesto de Liberdade Financeira</a> | 
-                Código Livre - Ideias Livres - Pessoas Livres
-            </div>
         </div>
-
-        <div style="text-align: center; margin-top: 10px;">
-            <small>
-                <a href="admin.html" style="color: #666; text-decoration: none;">
-                    🔧 Acesso Administrativo
-                </a>
-            </small>
-        </div>
-
-
-
-
-
-
-
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 
     <script>
-        // ========== CONFIGURAÇÃO E INICIALIZAÇÃO ==========
-        console.log('🚀 Inicializando Painel Admin LibreMint...');
-
         // ========== LIBREMINT CORE ==========
         class LibreMintCore {
             constructor() {
@@ -591,17 +486,15 @@
                 console.log(message);
             }
 
-            // NOVO FASE 1.5: Verificar status de backup dos usuários
+            // NOVO: Verificar status de backup dos usuários
             async checkUserBackupStatus(usersData) {
                 let usersWithBackup = 0;
                 let usersWithoutBackup = 0;
                 
-                if (!usersData) return { usersWithBackup: 0, usersWithoutBackup: 0, total: 0 };
-                
                 for (const [userId, user] of Object.entries(usersData)) {
-                    // Simulação: usuários criados recentemente têm backup
-                    const hasRecentActivity = (Date.now() - user.createdAt) < 7 * 24 * 60 * 60 * 1000;
-                    if (hasRecentActivity) {
+                    // Verifica se usuário tem dados de autenticação (indicativo de backup)
+                    const hasAuthData = user.authUid && user.authUid !== '';
+                    if (hasAuthData) {
                         usersWithBackup++;
                     } else {
                         usersWithoutBackup++;
@@ -629,31 +522,26 @@
 
         let firebaseApp;
         let database;
+        let auth;
 
+        // NOVO: Inicialização completa do Firebase
         async function initializeFirebase() {
             return new Promise((resolve, reject) => {
                 try {
-                    if (typeof firebase === 'undefined') {
-                        reject(new Error('Firebase SDK não carregado'));
-                        return;
-                    }
-
                     if (!firebase.apps.length) {
                         firebaseApp = firebase.initializeApp(firebaseConfig);
                         database = firebase.database();
-                        console.log('✅ Firebase inicializado');
+                        auth = firebase.auth();
                         
-                        // Testar conexão
                         database.ref('.info/connected').on('value', (snap) => {
                             if (snap.val() === true) {
-                                lmCore.debugLog('🌐 Conectado ao Firebase');
+                                lmCore.debugLog('✅ Firebase conectado com sucesso');
                                 resolve(true);
                             }
                         });
                         
-                        // Fallback
                         setTimeout(() => {
-                            lmCore.debugLog('⚠️ Usando fallback de conexão');
+                            lmCore.debugLog('⚠️ Firebase: usando fallback de conexão');
                             resolve(true);
                         }, 3000);
                     } else {
@@ -661,16 +549,29 @@
                         resolve(true);
                     }
                 } catch (error) {
-                    console.error('❌ Erro ao inicializar Firebase:', error);
+                    lmCore.debugLog('❌ Erro ao inicializar Firebase: ' + error.message);
                     reject(error);
                 }
             });
         }
 
+        // NOVO: Autenticação para Admin
+        async function authenticateAdmin() {
+            try {
+                const userCredential = await auth.signInAnonymously();
+                lmCore.debugLog('✅ Admin autenticado no Firebase');
+                return { success: true, user: userCredential.user };
+            } catch (error) {
+                lmCore.debugLog('❌ Erro na autenticação admin: ' + error.message);
+                return { success: false, error: error.message };
+            }
+        }
+
         const FirebaseDB = {
             ref(path) {
                 if (!database) {
-                    throw new Error('Database não inicializado');
+                    lmCore.debugLog('⚠️ Database não inicializado, tentando inicializar...');
+                    initializeFirebase();
                 }
                 return database.ref(path);
             },
@@ -681,7 +582,7 @@
                     lmCore.debugLog(`✅ Dados salvos em: ${path}`);
                     return { success: true };
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao salvar: ${error.message}`);
+                    lmCore.debugLog(`❌ Erro ao salvar em ${path}: ${error.message}`);
                     return { success: false, error };
                 }
             },
@@ -692,7 +593,7 @@
                     lmCore.debugLog(`✅ Dados atualizados em: ${path}`);
                     return { success: true };
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao atualizar: ${error.message}`);
+                    lmCore.debugLog(`❌ Erro ao atualizar em ${path}: ${error.message}`);
                     return { success: false, error };
                 }
             },
@@ -703,20 +604,16 @@
                     lmCore.debugLog(`✅ Dados lidos de: ${path}`);
                     return { success: true, data: snapshot.val() };
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao ler: ${error.message}`);
+                    lmCore.debugLog(`❌ Erro ao ler de ${path}: ${error.message}`);
                     return { success: false, error };
                 }
             },
 
             listen(path, callback) {
-                try {
-                    this.ref(path).on('value', (snapshot) => {
-                        lmCore.debugLog(`📡 Ouvindo: ${path}`);
-                        callback(snapshot.val());
-                    });
-                } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao ouvir: ${error.message}`);
-                }
+                this.ref(path).on('value', (snapshot) => {
+                    lmCore.debugLog(`📡 Ouvindo alterações em: ${path}`);
+                    callback(snapshot.val());
+                });
             },
 
             async push(path, data) {
@@ -726,76 +623,20 @@
                     lmCore.debugLog(`✅ Dados adicionados em: ${path}`);
                     return { success: true, key: newRef.key };
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao adicionar: ${error.message}`);
+                    lmCore.debugLog(`❌ Erro ao adicionar em ${path}: ${error.message}`);
                     return { success: false, error };
                 }
             }
         };
 
         // ========== CONFIGURAÇÕES DO PAINEL ==========
-        const ADMIN_PASSWORD = 'libremint2025'; // ⚠️ ALTERE ESTA SENHA!
+        const ADMIN_PASSWORD = 'libremint2025'; // ALTERE ESTA SENHA!
         const EXCHANGE_RATE = 1000; // 1 LM = R$ 1000
 
         const lmCore = new LibreMintCore();
         let usersData = {};
 
-        // ========== FUNÇÕES DE UTILIDADE ==========
-        function showAlert(elementId, message, type) {
-            const alertDiv = document.getElementById(elementId);
-            if (!message) {
-                alertDiv.innerHTML = '';
-                return;
-            }
-            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-        }
-
-        function showManifesto() {
-            const manifestoHTML = `
-                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999;" onclick="closeModal()"></div>
-                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000; max-width: 500px; width: 90%;">
-                    <h2 style="color: #1e3c72; margin-bottom: 15px; text-align: center;">🏴 MANIFESTO LIBREMINT</h2>
-                    <div style="text-align: left; line-height: 1.6;">
-                        <p><strong>CONTRA O SISTEMA CORROMPIDO</strong></p>
-                        <p>O <strong>SISTEMA</strong> é a engrenagem que moe quem ousa desafiá-lo.</p>
-                        <p><strong>Esta não é apenas uma moeda - é uma ARMA DE LIBERTAÇÃO.</strong></p>
-                        <p>Missão: Devolver o controle financeiro às pessoas.</p>
-                        <p>Método: Transparência radical + tecnologia descentralizada.</p>
-                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
-                            <em>"Não peça permissão para ser livre - Crie sistemas que garantam sua liberdade"</em>
-                            <br>- Carlos Alberto Reis
-                        </div>
-                    </div>
-                    <button class="btn" onclick="closeModal()" style="margin-top: 15px; width: 100%;">
-                        🎯 Fazer Parte Desta Revolução
-                    </button>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', manifestoHTML);
-        }
-
-        function closeModal() {
-            const overlay = document.querySelector('div[style*="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5)"]');
-            const modal = document.querySelector('div[style*="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)"]');
-            if (overlay) overlay.remove();
-            if (modal) modal.remove();
-        }
-
-        // ========== FUNÇÕES PRINCIPAIS ==========
-        window.onload = function() {
-            console.log('📄 Painel Admin carregado');
-            document.getElementById('adminDebug').classList.remove('hidden');
-            lmCore.debugLog('🔧 Sistema administrativo inicializado. Aguardando login...', 'adminDebug');
-
-
-            // Verificação adicional de segurança
-            checkAdminAccess();
-
-
-
-
-        };
-
-        // Login
+        // NOVO: Login com autenticação
         async function login() {
             const password = document.getElementById('adminPassword').value;
             const debugDiv = document.getElementById('adminDebug');
@@ -807,23 +648,29 @@
                 lmCore.debugLog('✅ Senha correta, inicializando sistema...', 'adminDebug');
                 
                 try {
-                    showAlert('loginAlert', '⏳ Conectando ao Firebase...', 'info');
+                    // NOVO: Inicializar Firebase primeiro
                     await initializeFirebase();
                     
-                    showAlert('loginAlert', '✅ Conectado! Carregando dados...', 'success');
+                    // NOVO: Autenticar Admin
+                    const authResult = await authenticateAdmin();
+                    if (!authResult.success) {
+                        throw new Error('Falha na autenticação admin: ' + authResult.error);
+                    }
+                    
                     loadUsers();
                     
                     document.getElementById('loginSection').classList.add('hidden');
                     document.getElementById('adminPanel').classList.remove('hidden');
+                    showAlert('loginAlert', '', '');
                     
-                    lmCore.debugLog('🎉 Painel administrativo carregado com sucesso!');
+                    lmCore.debugLog('🎉 Painel administrativo carregado com sucesso!', 'systemDebug');
                     
-                    // Atualizar status de backup
+                    // NOVO: Atualizar status de backup
                     updateBackupStatus();
                     
                 } catch (error) {
                     lmCore.debugLog(`❌ Erro ao inicializar: ${error.message}`, 'adminDebug');
-                    showAlert('loginAlert', `❌ Erro: ${error.message}`, 'danger');
+                    showAlert('loginAlert', '❌ Erro ao inicializar sistema', 'danger');
                 }
             } else {
                 lmCore.debugLog('❌ Senha incorreta!', 'adminDebug');
@@ -831,7 +678,7 @@
             }
         }
 
-        // NOVO FASE 1.5: Atualizar status de backup
+        // NOVO: Atualizar status de backup
         async function updateBackupStatus() {
             const backupStatus = await lmCore.checkUserBackupStatus(usersData);
             const statusElement = document.getElementById('backupStatus');
@@ -851,7 +698,7 @@
                 statusElement.className = 'backup-status backup-warning';
                 statusElement.textContent = `⚠️ ${Math.round(backupRate)}% com backup`;
             } else {
-                statusElement.className = 'backup-status backup-critical';
+                statusElement.className = 'backup-status backup-danger';
                 statusElement.textContent = `❌ ${Math.round(backupRate)}% com backup`;
             }
             
@@ -867,6 +714,8 @@
                 lmCore.debugLog(`👥 ${Object.keys(usersData).length} usuários carregados`);
                 updateUsersList();
                 updateStats();
+                
+                // NOVO: Atualizar status de backup
                 updateBackupStatus();
             });
 
@@ -895,9 +744,9 @@
                 const balanceLM = lmCore.satToLm(user.balanceSat || 0);
                 const balanceBRL = lmCore.satToBrl(user.balanceSat || 0, EXCHANGE_RATE);
                 
-                // NOVO FASE 1.5: Indicador de backup
-                const hasRecentBackup = (Date.now() - user.createdAt) < 7 * 24 * 60 * 60 * 1000;
-                const backupIndicator = hasRecentBackup ? '🛡️' : '⚠️';
+                // NOVO: Indicador de backup
+                const hasBackup = user.authUid && user.authUid !== '';
+                const backupIndicator = hasBackup ? '🛡️' : '⚠️';
 
                 html += `
                     <div class="user-card">
@@ -908,6 +757,7 @@
                         <div class="user-info">💳 ${user.address}</div>
                         <div class="user-info">💰 ${lmCore.formatSat(user.balanceSat)} sat</div>
                         <div class="user-info">💵 R$ ${balanceBRL.toFixed(2)}</div>
+                        <div class="user-info">🔐 ${hasBackup ? 'Autenticado' : 'Sem autenticação'}</div>
                         <div class="user-info">🆔 ${userId}</div>
                         <div class="user-info">📅 Criado: ${new Date(user.createdAt).toLocaleString('pt-BR')}</div>
                     </div>
@@ -1063,6 +913,16 @@
             document.getElementById('transactionDescription').value = '';
         }
 
+        // Mostra alerta
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            if (!message) {
+                alertDiv.innerHTML = '';
+                return;
+            }
+            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
         // Detecta Enter no campo de senha
         document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -1070,15 +930,8 @@
             }
         });
 
-
-        // Nova função de verificação de acesso
-        function checkAdminAccess() {
-            console.log('🔐 Acesso administrativo verificado');
-            // Aqui você pode adicionar verificações extras se quiser
-            // Exemplo: verificar parâmetros na URL, etc.
-        }
-
-
+        // Inicialização
+        lmCore.debugLog('🔧 Sistema administrativo inicializado. Aguardando login...');
     </script>
 </body>
 </html>
