@@ -491,6 +491,26 @@
                 <div id="packageAlert"></div>
             </div>
 
+
+<div class="game-container" style="margin-top: 20px;">
+    <h2 style="margin-bottom: 20px; color: #667eea;">Simulador de Conversão</h2>
+    <div class="alert alert-info" style="margin-bottom: 20px;">
+        Taxa de Câmbio Fixa: <strong>1 LM = R$ 1000.00</strong>
+    </div>
+
+    <div style="display: flex; gap: 20px;">
+        <div class="form-group" style="flex: 1;">
+            <label for="inputLM">Valor em LibreMint (LM):</label>
+            <input type="number" id="inputLM" placeholder="0.00" oninput="convertLMtoBRL(this.value)" step="any">
+        </div>
+        <div class="form-group" style="flex: 1;">
+            <label for="inputBRL">Valor em Reais (BRL):</label>
+            <input type="number" id="inputBRL" placeholder="0.00" oninput="convertBRLtoLM(this.value)" step="0.01">
+        </div>
+    </div>
+</div>
+
+
             <!-- Tabuleiro do Jogo -->
             <div id="gameBoard" class="hidden">
                 <h2 style="margin-bottom: 20px; color: #667eea;">Raspe os Cartões!</h2>
@@ -1562,6 +1582,25 @@
             }
             alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
         }
+
+
+const EXCHANGE_RATE = 1000; // 1 LM = 1000 BRL (Confirmado pelo admin.html)
+
+function convertLMtoBRL(lmValue) {
+    const lm = parseFloat(lmValue) || 0;
+    // As funções lmToBrl e brlToLm já existem na classe LibreMintCore
+    const brl = lmCore.lmToBrl(lm, EXCHANGE_RATE);
+    document.getElementById('inputBRL').value = brl.toFixed(2);
+}
+
+function convertBRLtoLM(brlValue) {
+    // Para evitar loops de atualização, removemos a atualização do LM
+    const brl = parseFloat(brlValue) || 0;
+    const lm = lmCore.brlToLm(brl, EXCHANGE_RATE);
+    document.getElementById('inputLM').value = lmCore.formatLM(lm, 6); // 6 casas decimais para LM
+}
+
+
     </script>
 </body>
 </html>
