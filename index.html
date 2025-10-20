@@ -71,17 +71,12 @@
             margin-bottom: 20px;
         }
 
-        .onboarding p {
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
         .game-container {
             background: white;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
 
         .package-selection {
@@ -117,11 +112,6 @@
             margin: 10px 0;
         }
 
-        .package-card .cards {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
         .game-board {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -142,16 +132,10 @@
             color: white;
             transition: all 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
         .scratch-card:hover:not(.revealed) {
             transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .scratch-card.revealed {
-            cursor: default;
         }
 
         .scratch-card.prize {
@@ -166,19 +150,6 @@
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
-        }
-
-        .scratch-card .cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8em;
         }
 
         .btn {
@@ -196,22 +167,15 @@
 
         .btn:hover {
             background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
         }
 
         .btn:disabled {
             background: #ccc;
             cursor: not-allowed;
-            transform: none;
         }
 
         .btn-secondary {
             background: #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: #5568d3;
         }
 
         .stats {
@@ -234,12 +198,6 @@
             color: #667eea;
         }
 
-        .stat-box .label {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
         .alert {
             padding: 15px;
             border-radius: 8px;
@@ -250,19 +208,16 @@
         .alert-success {
             background: #d4edda;
             color: #155724;
-            border: 1px solid #c3e6cb;
         }
 
         .alert-danger {
             background: #f8d7da;
             color: #721c24;
-            border: 1px solid #f5c6cb;
         }
 
         .alert-info {
             background: #d1ecf1;
             color: #0c5460;
-            border: 1px solid #bee5eb;
         }
 
         .hidden {
@@ -278,7 +233,6 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #333;
         }
 
         .form-group input {
@@ -287,11 +241,6 @@
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1em;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
         }
 
         .prize-summary {
@@ -320,114 +269,15 @@
             padding: 10px;
             margin: 10px 0;
             font-family: monospace;
-            font-size: 0.8em;
-            max-height: 100px;
+            font-size: 0.75em;
+            max-height: 150px;
             overflow-y: auto;
-        }
-
-        .backup-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 1000;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        .backup-modal h3 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .recovery-code {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 2px dashed #4CAF50;
-        }
-
-        .recovery-code .words {
-            font-family: monospace;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #1e3c72;
-            margin: 10px 0;
-            padding: 10px;
-            background: white;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .backup-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .backup-actions button {
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .recovery-options {
-            text-align: center;
-        }
-
-        .recovery-option {
-            background: #f8f9fa;
-            padding: 20px;
-            margin: 10px 0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-
-        .recovery-option:hover {
-            background: #e9ecef;
-            border-color: #667eea;
-            transform: translateY(-2px);
-        }
-
-        .recovery-option strong {
-            color: #1e3c72;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
         }
 
         @media (max-width: 768px) {
             .game-board {
                 grid-template-columns: repeat(5, 1fr);
                 gap: 5px;
-            }
-
-            .scratch-card {
-                font-size: 1em;
-            }
-
-            .backup-actions {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -436,7 +286,7 @@
     <!-- Onboarding -->
     <div id="onboarding" class="onboarding">
         <h2>🪙 Bem-vindo ao LibreMint!</h2>
-        <p>Para jogar a Raspadinha Interativa, você precisa criar sua carteira LibreMint.</p>
+        <p>Crie sua carteira para jogar a Raspadinha Interativa.</p>
         
         <div class="form-group">
             <label>Escolha seu apelido:</label>
@@ -445,537 +295,105 @@
 
         <button class="btn" onclick="createWallet()">Criar Minha Carteira</button>
         
-        <div id="onboardingAlert" style="margin-top: 15px;"></div>
-        <div id="debugLog" class="debug-log hidden"></div>
+        <div id="onboardingAlert"></div>
+        <div id="debugLog" class="debug-log"></div>
     </div>
 
     <!-- Aplicação Principal -->
     <div id="mainApp" class="container hidden">
-        <!-- Cabeçalho -->
         <div class="header">
             <div>
                 <h1>🪙 LibreMint Raspadinha</h1>
             </div>
             <div class="wallet-info">
-                <div class="balance" id="userBalance">0 LM</div>
+                <div class="balance" id="userBalance">Carregando...</div>
                 <div class="address" id="userAddress">Carregando...</div>
-                <div class="address" style="margin-top: 5px;">
+                <div class="address">
                     <span id="userNickname"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Container do Jogo -->
+        <!-- Seleção de Pacote -->
+        <div class="game-container" id="packageSelection">
+            <h2 style="margin-bottom: 20px; color: #667eea;">Escolha seu Pacote</h2>
+            <div class="package-selection">
+                <div class="package-card" onclick="selectPackage(1, 10)">
+                    <div>Pacote Básico</div>
+                    <div class="price">1 LM</div>
+                    <div>10 cartões</div>
+                </div>
+                <div class="package-card" onclick="selectPackage(2, 20)">
+                    <div>Pacote Médio</div>
+                    <div class="price">2 LM</div>
+                    <div>20 cartões</div>
+                </div>
+                <div class="package-card" onclick="selectPackage(3, 30)">
+                    <div>Pacote Premium</div>
+                    <div class="price">3 LM</div>
+                    <div>30 cartões</div>
+                </div>
+            </div>
+            <button class="btn" onclick="startGame()" id="startButton" disabled>Iniciar Jogo</button>
+            <div id="packageAlert"></div>
+        </div>
+
+        <!-- Conversor -->
         <div class="game-container">
-            <!-- Seleção de Pacote -->
-            <div id="packageSelection">
-                <h2 style="margin-bottom: 20px; color: #667eea;">Escolha seu Pacote</h2>
-                <div class="package-selection">
-                    <div class="package-card" onclick="selectPackage(1, 10)">
-                        <div>Pacote Básico</div>
-                        <div class="price">1 LM</div>
-                        <div class="cards">10 cartões</div>
-                    </div>
-                    <div class="package-card" onclick="selectPackage(2, 20)">
-                        <div>Pacote Médio</div>
-                        <div class="price">2 LM</div>
-                        <div class="cards">20 cartões</div>
-                    </div>
-                    <div class="package-card" onclick="selectPackage(3, 30)">
-                        <div>Pacote Premium</div>
-                        <div class="price">3 LM</div>
-                        <div class="cards">30 cartões</div>
-                    </div>
-                </div>
-                <button class="btn" onclick="startGame()" id="startButton" disabled>Iniciar Jogo</button>
-                <div id="packageAlert"></div>
+            <h2 style="margin-bottom: 20px; color: #667eea;">Simulador de Conversão</h2>
+            <div class="alert alert-info">
+                Taxa de Câmbio: <strong>1 LM = R$ 1.000,00</strong>
             </div>
-
-
-<div class="game-container" style="margin-top: 20px;">
-    <h2 style="margin-bottom: 20px; color: #667eea;">Simulador de Conversão</h2>
-    <div class="alert alert-info" style="margin-bottom: 20px;">
-        Taxa de Câmbio Fixa: <strong>1 LM = R$ 1000.00</strong>
-    </div>
-
-    <div style="display: flex; gap: 20px;">
-        <div class="form-group" style="flex: 1;">
-            <label for="inputLM">Valor em LibreMint (LM):</label>
-            <input type="number" id="inputLM" placeholder="0.00" oninput="convertLMtoBRL(this.value)" step="any">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label>Valor em LM:</label>
+                    <input type="number" id="inputLM" placeholder="0.0000" step="0.0001" oninput="convertLMtoBRL(this.value)">
+                </div>
+                <div class="form-group">
+                    <label>Valor em BRL (R$):</label>
+                    <input type="number" id="inputBRL" placeholder="0.00" step="0.01" oninput="convertBRLtoLM(this.value)">
+                </div>
+            </div>
         </div>
-        <div class="form-group" style="flex: 1;">
-            <label for="inputBRL">Valor em Reais (BRL):</label>
-            <input type="number" id="inputBRL" placeholder="0.00" oninput="convertBRLtoLM(this.value)" step="0.01">
+
+        <!-- Tabuleiro do Jogo -->
+        <div class="game-container hidden" id="gameBoard">
+            <h2 style="margin-bottom: 20px; color: #667eea;">Raspe os Cartões!</h2>
+            <div class="game-board" id="scratchCards"></div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="value" id="cardsRevealed">0</div>
+                    <div>Cartões Raspados</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="prizesFound">0</div>
+                    <div>Prêmios Encontrados</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="currentPrize">0 LM</div>
+                    <div>Prêmio Atual</div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-
-            <!-- Tabuleiro do Jogo -->
-            <div id="gameBoard" class="hidden">
-                <h2 style="margin-bottom: 20px; color: #667eea;">Raspe os Cartões!</h2>
-                <div class="game-board" id="scratchCards"></div>
-                
-                <div class="stats">
-                    <div class="stat-box">
-                        <div class="value" id="cardsRevealed">0</div>
-                        <div class="label">Cartões Raspados</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="value" id="prizesFound">0</div>
-                        <div class="label">Prêmios Encontrados</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="value" id="currentPrize">0 LM</div>
-                        <div class="label">Prêmio Atual</div>
-                    </div>
-                </div>
-
-                <div id="gameAlert"></div>
+        <!-- Resumo do Prêmio -->
+        <div class="game-container hidden" id="prizeSummary">
+            <div class="prize-summary">
+                <h3>🎉 Parabéns! Você ganhou:</h3>
+                <div class="total" id="totalPrize">0 LM</div>
+                <p style="margin-top: 10px;">O prêmio foi creditado em sua carteira!</p>
             </div>
-
-            <!-- Resumo do Prêmio -->
-            <div id="prizeSummary" class="hidden">
-                <div class="prize-summary">
-                    <h3>🎉 Parabéns! Você ganhou:</h3>
-                    <div class="total" id="totalPrize">0 LM</div>
-                    <p style="margin-top: 10px; color: #666;">
-                        O prêmio foi creditado em sua carteira!
-                    </p>
-                </div>
-                <button class="btn btn-secondary" onclick="resetGame()">Jogar Novamente</button>
-            </div>
+            <button class="btn btn-secondary" onclick="resetGame()">Jogar Novamente</button>
         </div>
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    
+
     <script>
-        // ========== LIBREMINT CORE ==========
-        class LibreMintCore {
-            constructor() {
-                this.SAT_PER_LM = 100000000;
-                this.wallet = null;
-                this.userId = null;
-                this.backupManager = new SecureBackupManager();
-                this.auth = null;
-                this.firebaseApp = null;
-            }
-
-            lmToSat(lm) {
-                return Math.round(lm * this.SAT_PER_LM);
-            }
-
-            satToLm(sat) {
-                return sat / this.SAT_PER_LM;
-            }
-
-            formatLM(lm, decimals = 8) {
-                return parseFloat(lm).toFixed(decimals);
-            }
-
-            formatSat(sat) {
-                return Math.round(sat).toLocaleString('pt-BR');
-            }
-
-            // NOVO: SISTEMA DE AUTENTICAÇÃO
-            async initializeAuth() {
-                try {
-                    if (!this.firebaseApp) {
-                        await initializeFirebase();
-                    }
-                    this.auth = firebase.auth();
-                    this.debugLog('✅ Autenticação Firebase inicializada');
-                    return this.auth;
-                } catch (error) {
-                    this.debugLog('❌ Erro ao inicializar autenticação: ' + error.message);
-                    throw error;
-                }
-            }
-
-            // NOVO: AUTENTICAR USUÁRIO ANÔNIMO
-            async authenticateUser() {
-                try {
-                    const userCredential = await this.auth.signInAnonymously();
-                    const user = userCredential.user;
-                    this.debugLog(`✅ Usuário autenticado: ${user.uid}`);
-                    return { success: true, user: user };
-                } catch (error) {
-                    this.debugLog(`❌ Erro na autenticação: ${error.message}`);
-                    return { success: false, error: error.message };
-                }
-            }
-
-            async generateWallet(nickname) {
-                try {
-                    // 1. Gerar carteira
-                    const timestamp = Date.now();
-                    const random = Math.random().toString(36).substring(2, 15);
-                    const publicKey = btoa(timestamp + random).substring(0, 20);
-                    
-                    this.wallet = {
-                        publicKey: publicKey,
-                        address: 'LM' + this.simpleHash(publicKey).substring(0, 14).toUpperCase()
-                    };
-
-                    // 2. Gerar userId
-                    const userId = this.generateUserId(nickname);
-                    this.userId = userId;
-
-                    // 3. Inicializar e autenticar
-                    await this.initializeAuth();
-                    const authResult = await this.authenticateUser();
-                    
-                    if (!authResult.success) {
-                        throw new Error('Falha na autenticação: ' + authResult.error);
-                    }
-
-                    return this.wallet;
-                } catch (error) {
-                    console.error('Erro ao gerar carteira:', error);
-                    // Fallback sem autenticação
-                    this.wallet = {
-                        publicKey: 'fallback_' + Date.now(),
-                        address: 'LM' + Math.random().toString(36).substring(2, 16).toUpperCase()
-                    };
-                    return this.wallet;
-                }
-            }
-
-            simpleHash(str) {
-                let hash = 0;
-                for (let i = 0; i < str.length; i++) {
-                    const char = str.charCodeAt(i);
-                    hash = ((hash << 5) - hash) + char;
-                    hash = hash & hash;
-                }
-                return Math.abs(hash).toString(36);
-            }
-
-            generateUserId(nickname) {
-                const timestamp = Date.now();
-                const random = Math.random().toString(36).substring(2, 9);
-                return `${nickname.toLowerCase().replace(/[^a-z0-9]/g, '')}_${timestamp}_${random}`;
-            }
-
-            async saveWalletToStorage(nickname) {
-                if (!this.wallet) return;
-                
-                const walletData = {
-                    publicKey: this.wallet.publicKey,
-                    address: this.wallet.address,
-                    userId: this.userId,
-                    authUid: this.auth?.currentUser?.uid
-                };
-                
-                localStorage.setItem('libremint_wallet', JSON.stringify(walletData));
-                this.debugLog('Carteira salva no localStorage');
-
-                // SALVAR NO FIREBASE COM AUTENTICAÇÃO
-                try {
-                    if (this.auth?.currentUser) {
-                        await FirebaseDB.set(`users/${this.userId}`, {
-                            nickname: nickname,
-                            address: this.wallet.address,
-                            publicKey: this.wallet.publicKey,
-                            balanceSat: this.lmToSat(10),
-                            createdAt: Date.now(),
-                            authUid: this.auth.currentUser.uid
-                        });
-                        this.debugLog('✅ Dados salvos no Firebase com autenticação');
-                    }
-                } catch (error) {
-                    this.debugLog('⚠️ Dados salvos apenas localmente: ' + error.message);
-                }
-
-                // Backup automático
-                this.backupManager.createEncryptedBackup(walletData)
-                    .then(result => {
-                        if (result.success) {
-                            this.debugLog('✅ Backup criptografado criado com sucesso');
-                            if (!localStorage.getItem('libremint_backup_shown')) {
-                                this.showRecoveryInstructions(result.recoveryCode, walletData);
-                                localStorage.setItem('libremint_backup_shown', 'true');
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        this.debugLog('⚠️ Backup automático falhou: ' + error.message);
-                    });
-            }
-
-            showRecoveryInstructions(recoveryCode, walletData) {
-                const modalHTML = `
-                    <div class="modal-overlay" onclick="this.remove(); document.getElementById('backupModal').remove();"></div>
-                    <div id="backupModal" class="backup-modal">
-                        <h3>🛡️ Backup de Segurança Criado!</h3>
-                        <p>Seu backup foi criptografado e salvo automaticamente.</p>
-                        
-                        <div class="recovery-code">
-                            <strong>Código de Recuperação (12 palavras):</strong>
-                            <div class="words">${recoveryCode}</div>
-                            <button class="btn-secondary" onclick="copyToClipboard('${recoveryCode}')" style="margin: 5px;">
-                                📋 Copiar Código
-                            </button>
-                        </div>
-                        
-                        <div class="backup-actions">
-                            <button class="btn" onclick="downloadBackupFile(${JSON.stringify(walletData).replace(/"/g, '&quot;')})">
-                                💾 Baixar Arquivo de Backup
-                            </button>
-                            <button class="btn-secondary" onclick="printBackupCode('${recoveryCode}')">
-                                🖨️ Imprimir Código
-                            </button>
-                        </div>
-                        
-                        <p style="margin-top: 15px; text-align: center;">
-                            <small>⚠️ <strong>GUARDE EM 2 LUGARES DIFERENTES!</strong><br>Este código recupera sua carteira se perder acesso.</small>
-                        </p>
-                        
-                        <button class="btn" onclick="document.querySelector('.modal-overlay').remove(); document.getElementById('backupModal').remove();" style="margin-top: 15px;">
-                            ✅ Entendi, vou guardar com segurança
-                        </button>
-                    </div>
-                `;
-                
-                document.body.innerHTML += modalHTML;
-            }
-
-            loadWalletFromStorage() {
-                const stored = localStorage.getItem('libremint_wallet');
-                if (stored) {
-                    try {
-                        const walletData = JSON.parse(stored);
-                        this.userId = walletData.userId;
-                        this.debugLog('Carteira carregada do localStorage');
-                        return walletData;
-                    } catch (e) {
-                        this.debugLog('Erro ao carregar carteira do localStorage: ' + e.message);
-                    }
-                }
-                return null;
-            }
-
-            debugLog(message) {
-                const debugDiv = document.getElementById('debugLog');
-                if (debugDiv) {
-                    const timestamp = new Date().toLocaleTimeString();
-                    debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
-                    debugDiv.scrollTop = debugDiv.scrollHeight;
-                }
-                console.log(message);
-            }
-        }
-
-        // ========== FASE 1.5: SECURE BACKUP MANAGER ==========
-        class SecureBackupManager {
-            constructor() {
-                this.dbName = 'LibreMintBackups';
-                this.dbVersion = 1;
-                this.wordList = [
-                    'abacaxi', 'banana', 'cachorro', 'dado', 'elefante', 'foguete', 'gato', 'helicoptero',
-                    'igreja', 'janela', 'ketchup', 'limao', 'macaco', 'navio', 'oculos', 'pato', 'queijo',
-                    'rato', 'sapo', 'tigre', 'uva', 'vaca', 'walkman', 'xadrez', 'yoga', 'zebra',
-                    'amar', 'bater', 'correr', 'dancar', 'estudar', 'falar', 'gostar', 'habitar', 'imaginar',
-                    'jogar', 'ler', 'morar', 'nadar', 'ouvir', 'pensar', 'querer', 'rir', 'sorrir', 'trabalhar'
-                ];
-            }
-
-            async createEncryptedBackup(walletData) {
-                try {
-                    this.debugLog('🔐 Criando backup criptografado...');
-                    
-                    const encryptionKey = await this.generateEncryptionKey();
-                    const encryptedData = await this.encryptData(JSON.stringify(walletData), encryptionKey);
-                    await this.saveToIndexedDB(encryptedData);
-                    const recoveryCode = await this.generateRecoveryCode(encryptionKey);
-                    
-                    this.debugLog('✅ Backup criado com sucesso');
-                    return { success: true, recoveryCode, encryptedData };
-                    
-                } catch (error) {
-                    this.debugLog('❌ Erro no backup: ' + error.message);
-                    return { success: false, error: error.message };
-                }
-            }
-
-            async generateEncryptionKey() {
-                const randomData = new Uint8Array(32);
-                crypto.getRandomValues(randomData);
-                
-                const key = await crypto.subtle.importKey(
-                    'raw',
-                    randomData,
-                    { name: 'AES-GCM' },
-                    false,
-                    ['encrypt', 'decrypt']
-                );
-                
-                return key;
-            }
-
-            async encryptData(data, key) {
-                const encoder = new TextEncoder();
-                const dataBuffer = encoder.encode(data);
-                
-                const iv = crypto.getRandomValues(new Uint8Array(12));
-                
-                const encrypted = await crypto.subtle.encrypt(
-                    { name: 'AES-GCM', iv },
-                    key,
-                    dataBuffer
-                );
-                
-                return {
-                    encrypted: Array.from(new Uint8Array(encrypted)),
-                    iv: Array.from(iv),
-                    timestamp: Date.now()
-                };
-            }
-
-            async generateRecoveryCode(key) {
-                const exported = await crypto.subtle.exportKey('raw', key);
-                const keyBytes = new Uint8Array(exported);
-                
-                const words = [];
-                for (let i = 0; i < 12; i++) {
-                    const index = keyBytes[i] % this.wordList.length;
-                    words.push(this.wordList[index]);
-                }
-                
-                return words.join(' ');
-            }
-
-            async saveToIndexedDB(data) {
-                return new Promise((resolve, reject) => {
-                    const request = indexedDB.open(this.dbName, this.dbVersion);
-                    
-                    request.onerror = () => reject(new Error('Erro ao abrir IndexedDB'));
-                    
-                    request.onsuccess = (event) => {
-                        const db = event.target.result;
-                        const transaction = db.transaction(['backups'], 'readwrite');
-                        const store = transaction.objectStore('backups');
-                        
-                        const backupItem = {
-                            id: 'primary_wallet',
-                            data: data,
-                            timestamp: Date.now()
-                        };
-                        
-                        const putRequest = store.put(backupItem);
-                        
-                        putRequest.onsuccess = () => resolve();
-                        putRequest.onerror = () => reject(new Error('Erro ao salvar backup'));
-                    };
-                    
-                    request.onupgradeneeded = (event) => {
-                        const db = event.target.result;
-                        if (!db.objectStoreNames.contains('backups')) {
-                            db.createObjectStore('backups', { keyPath: 'id' });
-                        }
-                    };
-                });
-            }
-
-            async recoverFromCode(recoveryCode) {
-                try {
-                    this.debugLog('🔑 Tentando recuperar com código...');
-                    
-                    const encryptionKey = await this.recoveryCodeToKey(recoveryCode);
-                    const encryptedData = await this.getFromIndexedDB();
-                    if (!encryptedData) {
-                        throw new Error('Nenhum backup encontrado localmente');
-                    }
-                    
-                    const decryptedData = await this.decryptData(encryptedData, encryptionKey);
-                    const walletData = JSON.parse(decryptedData);
-                    
-                    this.debugLog('✅ Carteira recuperada com sucesso');
-                    return { success: true, walletData };
-                    
-                } catch (error) {
-                    this.debugLog('❌ Falha na recuperação: ' + error.message);
-                    return { success: false, error: error.message };
-                }
-            }
-
-            async recoveryCodeToKey(recoveryCode) {
-                const words = recoveryCode.split(' ');
-                if (words.length !== 12) {
-                    throw new Error('Código deve ter 12 palavras');
-                }
-                
-                const keyBytes = new Uint8Array(32);
-                for (let i = 0; i < 12; i++) {
-                    const wordIndex = this.wordList.indexOf(words[i]);
-                    if (wordIndex === -1) {
-                        throw new Error('Palavra inválida no código: ' + words[i]);
-                    }
-                    keyBytes[i] = wordIndex;
-                }
-                
-                for (let i = 12; i < 32; i++) {
-                    keyBytes[i] = 0;
-                }
-                
-                const key = await crypto.subtle.importKey(
-                    'raw',
-                    keyBytes,
-                    { name: 'AES-GCM' },
-                    false,
-                    ['encrypt', 'decrypt']
-                );
-                
-                return key;
-            }
-
-            async decryptData(encryptedData, key) {
-                const encryptedArray = new Uint8Array(encryptedData.encrypted);
-                const iv = new Uint8Array(encryptedData.iv);
-                
-                const decrypted = await crypto.subtle.decrypt(
-                    { name: 'AES-GCM', iv },
-                    key,
-                    encryptedArray
-                );
-                
-                return new TextDecoder().decode(decrypted);
-            }
-
-            async getFromIndexedDB() {
-                return new Promise((resolve, reject) => {
-                    const request = indexedDB.open(this.dbName, this.dbVersion);
-                    
-                    request.onerror = () => reject(new Error('Erro ao abrir IndexedDB'));
-                    
-                    request.onsuccess = (event) => {
-                        const db = event.target.result;
-                        const transaction = db.transaction(['backups'], 'readonly');
-                        const store = transaction.objectStore('backups');
-                        const getRequest = store.get('primary_wallet');
-                        
-                        getRequest.onsuccess = () => resolve(getRequest.result ? getRequest.result.data : null);
-                        getRequest.onerror = () => reject(new Error('Erro ao ler backup'));
-                    };
-                });
-            }
-
-            debugLog(message) {
-                const debugDiv = document.getElementById('debugLog');
-                if (debugDiv) {
-                    const timestamp = new Date().toLocaleTimeString();
-                    debugDiv.innerHTML += `[${timestamp}] ${message}<br>`;
-                    debugDiv.scrollTop = debugDiv.scrollHeight;
-                }
-                console.log(message);
-            }
-        }
-
-        // ========== FIREBASE CONFIG ==========
+        // ========== CONFIGURAÇÃO ==========
         const firebaseConfig = {
             apiKey: "AIzaSyA5suVRJ9KrNq7RG6Ui8nfyuHhgFLWedns",
             authDomain: "libremint-2025.firebaseapp.com",
@@ -986,409 +404,238 @@
             appId: "1:443804344775:web:cf09abf9bb2637ae8bf9e2"
         };
 
-        let firebaseApp;
+        const EXCHANGE_RATE = 1000;
+        const PRIZE_MULTIPLIERS = [0.5, 1, 1.5, 2, 3, 5];
+
+        // ========== VARIÁVEIS GLOBAIS ==========
         let database;
+        let currentUser = null;
+        let selectedPackage = null;
+        let gameState = { cards: [], revealed: 0, prizes: 0, totalPrize: 0 };
 
-        async function initializeFirebase() {
-            return new Promise((resolve, reject) => {
+        // ========== LIBREMINT CORE ==========
+        const LM = {
+            SAT_PER_LM: 100000000,
+            
+            lmToSat(lm) {
+                return Math.round(lm * this.SAT_PER_LM);
+            },
+            
+            satToLm(sat) {
+                return sat / this.SAT_PER_LM;
+            },
+            
+            formatLM(lm, decimals = 4) {
+                return parseFloat(lm).toFixed(decimals);
+            },
+            
+            formatSat(sat) {
+                return Math.round(sat).toLocaleString('pt-BR');
+            },
+            
+            brlToLm(brl) {
+                return brl / EXCHANGE_RATE;
+            },
+            
+            lmToBrl(lm) {
+                return lm * EXCHANGE_RATE;
+            },
+            
+            brlToSat(brl) {
+                return this.lmToSat(this.brlToLm(brl));
+            },
+            
+            satToBrl(sat) {
+                return this.lmToBrl(this.satToLm(sat));
+            },
+
+            log(msg) {
+                const time = new Date().toLocaleTimeString();
+                const debugLog = document.getElementById('debugLog');
+                if (debugLog) {
+                    debugLog.innerHTML += `[${time}] ${msg}<br>`;
+                    debugLog.scrollTop = debugLog.scrollHeight;
+                }
+                console.log(msg);
+            }
+        };
+
+        // ========== FIREBASE ==========
+        const DB = {
+            async init() {
                 try {
-                    if (!firebase.apps.length) {
-                        firebaseApp = firebase.initializeApp(firebaseConfig);
-                        database = firebase.database();
-                        lmCore.firebaseApp = firebaseApp;
-                        
-                        database.ref('.info/connected').on('value', (snap) => {
-                            if (snap.val() === true) {
-                                lmCore.debugLog('✅ Firebase conectado com sucesso');
-                                resolve(true);
-                            }
-                        });
-                        
-                        setTimeout(() => {
-                            lmCore.debugLog('⚠️ Firebase: usando fallback de conexão');
-                            resolve(true);
-                        }, 3000);
-                    } else {
-                        lmCore.debugLog('✅ Firebase já inicializado');
-                        resolve(true);
-                    }
+                    firebase.initializeApp(firebaseConfig);
+                    database = firebase.database();
+                    LM.log('✅ Firebase inicializado');
+                    return true;
                 } catch (error) {
-                    lmCore.debugLog('❌ Erro ao inicializar Firebase: ' + error.message);
-                    reject(error);
+                    LM.log('❌ Erro Firebase: ' + error.message);
+                    return false;
                 }
-            });
-        }
-
-        const FirebaseDB = {
-            ref(path) {
-                if (!database) {
-                    lmCore.debugLog('⚠️ Database não inicializado, tentando inicializar...');
-                    initializeFirebase();
-                }
-                return database.ref(path);
             },
 
             async set(path, data) {
                 try {
-                    await this.ref(path).set(data);
-                    lmCore.debugLog(`✅ Dados salvos em: ${path}`);
-                    return { success: true };
+                    await database.ref(path).set(data);
+                    LM.log(`✅ Salvo: ${path}`);
+                    return true;
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao salvar em ${path}: ${error.message}`);
-                    return { success: false, error };
+                    LM.log(`❌ Erro ao salvar: ${error.message}`);
+                    return false;
                 }
             },
 
             async update(path, data) {
                 try {
-                    await this.ref(path).update(data);
-                    lmCore.debugLog(`✅ Dados atualizados em: ${path}`);
-                    return { success: true };
+                    await database.ref(path).update(data);
+                    LM.log(`✅ Atualizado: ${path}`);
+                    return true;
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao atualizar em ${path}: ${error.message}`);
-                    return { success: false, error };
+                    LM.log(`❌ Erro ao atualizar: ${error.message}`);
+                    return false;
                 }
             },
 
             async get(path) {
                 try {
-                    const snapshot = await this.ref(path).once('value');
-                    lmCore.debugLog(`✅ Dados lidos de: ${path}`);
-                    return { success: true, data: snapshot.val() };
+                    const snapshot = await database.ref(path).once('value');
+                    return snapshot.val();
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao ler de ${path}: ${error.message}`);
-                    return { success: false, error };
+                    LM.log(`❌ Erro ao ler: ${error.message}`);
+                    return null;
                 }
             },
 
             listen(path, callback) {
-                this.ref(path).on('value', (snapshot) => {
-                    lmCore.debugLog(`📡 Ouvindo alterações em: ${path}`);
+                database.ref(path).on('value', (snapshot) => {
                     callback(snapshot.val());
                 });
             },
 
             async push(path, data) {
                 try {
-                    const newRef = this.ref(path).push();
-                    await newRef.set(data);
-                    lmCore.debugLog(`✅ Dados adicionados em: ${path}`);
-                    return { success: true, key: newRef.key };
+                    await database.ref(path).push(data);
+                    LM.log(`✅ Adicionado: ${path}`);
+                    return true;
                 } catch (error) {
-                    lmCore.debugLog(`❌ Erro ao adicionar em ${path}: ${error.message}`);
-                    return { success: false, error };
+                    LM.log(`❌ Erro ao adicionar: ${error.message}`);
+                    return false;
                 }
             }
         };
 
         // ========== APLICAÇÃO ==========
-        const EXCHANGE_RATE = 1000;
-        const PRIZE_MULTIPLIERS = [0.5, 1, 1.5, 2, 3, 5];
-
-        let lmCore = new LibreMintCore();
-        let currentUser = null;
-        let selectedPackage = null;
-        let gameState = {
-            cards: [],
-            revealed: 0,
-            prizes: 0,
-            totalPrize: 0
-        };
-
-        // Funções de backup e recuperação
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('✅ Código copiado para a área de transferência!');
-            }).catch(err => {
-                console.error('Erro ao copiar:', err);
-            });
-        }
-
-        function downloadBackupFile(walletData) {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-                ...walletData,
-                backupVersion: "1.5",
-                timestamp: new Date().toISOString(),
-                instructions: "Use este arquivo para recuperar sua carteira LibreMint"
-            }, null, 2));
-            
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `libremint_backup_${walletData.address}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            
-            alert('✅ Arquivo de backup baixado! Guarde em local seguro.');
-        }
-
-        function printBackupCode(recoveryCode) {
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Backup LibreMint</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            .code { font-size: 18px; font-weight: bold; margin: 20px 0; padding: 15px; border: 2px dashed #000; text-align: center; }
-                            .warning { color: red; font-weight: bold; }
-                        </style>
-                    </head>
-                    <body>
-                        <h1>🪙 Backup LibreMint</h1>
-                        <p><strong>Data:</strong> ${new Date().toLocaleString('pt-BR')}</p>
-                        <p><strong>Endereço:</strong> ${lmCore.wallet.address}</p>
-                        
-                        <div class="code">${recoveryCode}</div>
-                        
-                        <p class="warning">⚠️ GUARDE ESTE CÓDIGO EM LOCAL SEGURO!</p>
-                        <p>Este código de 12 palavras permite recuperar sua carteira LibreMint caso perda acesso.</p>
-                        
-                        <p><small>Instruções: Acesse LibreMint → "Recuperar Carteira" → "Inserir Código"</small></p>
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        function showRecoveryOptions() {
-            const onboarding = document.getElementById('onboarding');
-            onboarding.innerHTML = `
-                <h2>🔍 Recuperar Carteira Existente</h2>
-                <p>Escolha como recuperar sua carteira LibreMint:</p>
-                
-                <div class="recovery-option" onclick="recoverFromCodeInput()">
-                    <strong>🔤 Inserir Código de Recuperação</strong>
-                    <p>Digite suas 12 palavras de recuperação</p>
-                </div>
-                
-                <div class="recovery-option" onclick="recoverFromFileUpload()">
-                    <strong>📁 Upload de Arquivo Backup</strong>
-                    <p>Use seu arquivo .json de backup</p>
-                </div>
-                
-                <div class="recovery-option" onclick="recoverAuto()">
-                    <strong>🔄 Recuperação Automática</strong>
-                    <p>Tenta recuperar do backup local</p>
-                </div>
-                
-                <div class="recovery-option" onclick="createNewWalletFromRecovery()">
-                    <strong>🆕 Criar Nova Carteira</strong>
-                    <p>Começar do zero (perde fundos anteriores)</p>
-                </div>
-                
-                <div id="recoveryAlert" style="margin-top: 15px;"></div>
-            `;
-        }
-
-        async function recoverFromCodeInput() {
-            const recoveryCode = prompt('Digite suas 12 palavras de recuperação (separadas por espaços):');
-            if (!recoveryCode) return;
-            
-            showAlert('recoveryAlert', '⏳ Recuperando carteira...', 'info');
-            
-            const result = await lmCore.backupManager.recoverFromCode(recoveryCode.trim());
-            
-            if (result.success) {
-                lmCore.wallet = {
-                    publicKey: result.walletData.publicKey,
-                    address: result.walletData.address
-                };
-                lmCore.userId = result.walletData.userId;
-                
-                localStorage.setItem('libremint_wallet', JSON.stringify(result.walletData));
-                
-                showAlert('recoveryAlert', '✅ Carteira recuperada com sucesso!', 'success');
-                
-                setTimeout(() => {
-                    initializeFirebase().then(() => {
-                        loadUserData(result.walletData.userId);
-                        document.getElementById('onboarding').classList.add('hidden');
-                        document.getElementById('mainApp').classList.remove('hidden');
-                    });
-                }, 1000);
-            } else {
-                showAlert('recoveryAlert', `❌ Falha na recuperação: ${result.error}`, 'danger');
-            }
-        }
-
-        function recoverFromFileUpload() {
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = '.json';
-            fileInput.onchange = async (event) => {
-                const file = event.target.files[0];
-                if (!file) return;
-                
-                showAlert('recoveryAlert', '⏳ Processando arquivo...', 'info');
-                
-                try {
-                    const text = await file.text();
-                    const walletData = JSON.parse(text);
-                    
-                    if (!walletData.publicKey || !walletData.address || !walletData.userId) {
-                        throw new Error('Arquivo de backup inválido');
-                    }
-                    
-                    lmCore.wallet = {
-                        publicKey: walletData.publicKey,
-                        address: walletData.address
-                    };
-                    lmCore.userId = walletData.userId;
-                    
-                    localStorage.setItem('libremint_wallet', JSON.stringify(walletData));
-                    
-                    showAlert('recoveryAlert', '✅ Carteira recuperada do arquivo!', 'success');
-                    
-                    setTimeout(() => {
-                        initializeFirebase().then(() => {
-                            loadUserData(walletData.userId);
-                            document.getElementById('onboarding').classList.add('hidden');
-                            document.getElementById('mainApp').classList.remove('hidden');
-                        });
-                    }, 1000);
-                    
-                } catch (error) {
-                    showAlert('recoveryAlert', `❌ Erro ao processar arquivo: ${error.message}`, 'danger');
-                }
-            };
-            
-            fileInput.click();
-        }
-
-        async function recoverAuto() {
-            showAlert('recoveryAlert', '🔍 Procurando backup local...', 'info');
-            
-            try {
-                const encryptedData = await lmCore.backupManager.getFromIndexedDB();
-                if (!encryptedData) {
-                    throw new Error('Nenhum backup local encontrado');
-                }
-                
-                showAlert('recoveryAlert', '⚠️ Backup encontrado, mas precisa do código de recuperação.', 'info');
-                setTimeout(() => recoverFromCodeInput(), 1000);
-                
-            } catch (error) {
-                showAlert('recoveryAlert', `❌ Nenhum backup automático encontrado: ${error.message}`, 'danger');
-            }
-        }
-
-        function createNewWalletFromRecovery() {
-            document.getElementById('onboarding').innerHTML = `
-                <h2>🪙 Bem-vindo ao LibreMint!</h2>
-                <p>Para jogar a Raspadinha Interativa, você precisa criar sua carteira LibreMint.</p>
-                
-                <div class="form-group">
-                    <label>Escolha seu apelido:</label>
-                    <input type="text" id="nickname" placeholder="Digite seu apelido" maxlength="20">
-                </div>
-
-                <button class="btn" onclick="createWallet()">Criar Minha Carteira</button>
-                
-                <div id="onboardingAlert" style="margin-top: 15px;"></div>
-                <div id="debugLog" class="debug-log hidden"></div>
-            `;
-        }
-
-        window.onload = function() {
-            document.getElementById('debugLog').classList.remove('hidden');
+        window.onload = async function() {
+            LM.log('🚀 Iniciando LibreMint...');
+            await DB.init();
             checkExistingWallet();
         };
 
         function checkExistingWallet() {
-            lmCore.debugLog('🔍 Verificando carteira existente...');
-            const stored = lmCore.loadWalletFromStorage();
-            if (stored && stored.userId) {
-                lmCore.debugLog('✅ Carteira encontrada, inicializando...');
-                initializeFirebase().then(() => {
-                    loadUserData(stored.userId);
-                    document.getElementById('onboarding').classList.add('hidden');
-                    document.getElementById('mainApp').classList.remove('hidden');
-                });
+            const stored = localStorage.getItem('libremint_wallet');
+            if (stored) {
+                try {
+                    const wallet = JSON.parse(stored);
+                    LM.log('✅ Carteira encontrada');
+                    loadUserData(wallet.userId);
+                } catch (e) {
+                    LM.log('❌ Carteira corrompida');
+                }
             } else {
-                lmCore.debugLog('ℹ️ Nenhuma carteira encontrada, oferecendo recuperação...');
-                showRecoveryOptions();
+                LM.log('ℹ️ Nenhuma carteira encontrada');
             }
         }
 
         async function createWallet() {
             const nickname = document.getElementById('nickname').value.trim();
             
-            if (!nickname) {
-                showAlert('onboardingAlert', '⚠️ Por favor, digite um apelido', 'danger');
+            if (!nickname || nickname.length < 3) {
+                showAlert('onboardingAlert', '⚠️ Digite um apelido válido (min 3 caracteres)', 'danger');
                 return;
             }
 
-            if (nickname.length < 3) {
-                showAlert('onboardingAlert', '⚠️ O apelido deve ter pelo menos 3 caracteres', 'danger');
-                return;
-            }
-
-            lmCore.debugLog('🚀 Iniciando criação de carteira...');
-            showAlert('onboardingAlert', '⏳ Etapa 1/4: Validando apelido...', 'info');
+            LM.log('📝 Criando carteira para: ' + nickname);
+            showAlert('onboardingAlert', '⏳ Criando carteira...', 'info');
 
             try {
-                showAlert('onboardingAlert', '⏳ Etapa 2/4: Inicializando Firebase...', 'info');
-                lmCore.debugLog('🔧 Inicializando Firebase...');
-                await initializeFirebase();
-                
-                showAlert('onboardingAlert', '⏳ Etapa 3/4: Gerando carteira...', 'info');
-                lmCore.debugLog('🔧 Gerando carteira...');
-                await lmCore.generateWallet(nickname);
-                
-                lmCore.debugLog(`👤 ID do usuário gerado: ${lmCore.userId}`);
+                // Gerar dados
+                const timestamp = Date.now();
+                const random = Math.random().toString(36).substring(2, 15);
+                const address = 'LM' + btoa(nickname + timestamp).substring(0, 14).toUpperCase();
+                const userId = `${nickname.toLowerCase().replace(/[^a-z0-9]/g, '')}_${timestamp}_${random}`;
 
-                showAlert('onboardingAlert', '⏳ Etapa 4/4: Salvando no banco de dados...', 'info');
-                lmCore.debugLog('💾 Salvando dados...');
-                
-                await lmCore.saveWalletToStorage(nickname);
-                
-                showAlert('onboardingAlert', '✅ Carteira criada com sucesso! 10 LM de bônus!', 'success');
-                lmCore.debugLog('🎉 Carteira criada com sucesso!');
-                
+                // Saldo inicial: 10 LM = 1.000.000.000 satoshis
+                const initialBalance = LM.lmToSat(10);
+
+                LM.log(`📋 UserId: ${userId}`);
+                LM.log(`💳 Address: ${address}`);
+                LM.log(`💰 Saldo inicial: ${initialBalance} sat (10 LM)`);
+
+                // Salvar no Firebase
+                const userData = {
+                    nickname: nickname,
+                    address: address,
+                    balanceSat: initialBalance,
+                    createdAt: timestamp
+                };
+
+                const saved = await DB.set(`users/${userId}`, userData);
+
+                if (!saved) {
+                    throw new Error('Falha ao salvar no Firebase');
+                }
+
+                // Salvar localmente
+                localStorage.setItem('libremint_wallet', JSON.stringify({
+                    userId: userId,
+                    address: address
+                }));
+
+                showAlert('onboardingAlert', '✅ Carteira criada! 10 LM de bônus!', 'success');
+                LM.log('🎉 Carteira criada com sucesso!');
+
                 setTimeout(() => {
                     document.getElementById('onboarding').classList.add('hidden');
                     document.getElementById('mainApp').classList.remove('hidden');
-                    loadUserData(lmCore.userId);
+                    loadUserData(userId);
                 }, 1500);
 
             } catch (error) {
-                console.error('Erro detalhado:', error);
-                lmCore.debugLog(`💥 ERRO: ${error.message}`);
-                showAlert('onboardingAlert', `❌ Erro: ${error.message}`, 'danger');
+                LM.log('💥 ERRO: ' + error.message);
+                showAlert('onboardingAlert', '❌ Erro: ' + error.message, 'danger');
             }
         }
 
-        async function loadUserData(userId) {
-            lmCore.debugLog(`📥 Carregando dados do usuário: ${userId}`);
+        function loadUserData(userId) {
+            LM.log(`📥 Carregando dados: ${userId}`);
             currentUser = userId;
             
-            FirebaseDB.listen(`users/${userId}`, (userData) => {
+            DB.listen(`users/${userId}`, (userData) => {
                 if (userData) {
-                    lmCore.debugLog('✅ Dados do usuário recebidos');
-                    updateUserDisplay(userData);
+                    LM.log('✅ Dados recebidos do Firebase');
+                    updateDisplay(userData);
                 } else {
-                    lmCore.debugLog('⚠️ Dados do usuário não encontrados');
+                    LM.log('⚠️ Usuário não encontrado no Firebase');
+                    showAlert('packageAlert', '⚠️ Dados não encontrados. Tente recriar a carteira.', 'danger');
                 }
             });
         }
 
-        function updateUserDisplay(userData) {
-            const balanceLM = lmCore.satToLm(userData.balanceSat || 0);
+        function updateDisplay(userData) {
+            const balanceLM = LM.satToLm(userData.balanceSat || 0);
             const balanceSat = userData.balanceSat || 0;
 
-            document.getElementById('userBalance').textContent = `${lmCore.formatLM(balanceLM, 4)} LM`;
+            document.getElementById('userBalance').textContent = `${LM.formatLM(balanceLM, 4)} LM`;
             document.getElementById('userAddress').textContent = `💳 ${userData.address}`;
-            document.getElementById('userNickname').textContent = `👤 ${userData.nickname} | 💰 ${lmCore.formatSat(balanceSat)} sat`;
+            document.getElementById('userNickname').textContent = `👤 ${userData.nickname} | 💰 ${LM.formatSat(balanceSat)} sat`;
             
-            lmCore.debugLog(`📊 Saldo atualizado: ${balanceLM} LM`);
+            LM.log(`📊 Saldo: ${balanceLM} LM (${balanceSat} sat)`);
         }
 
         function selectPackage(lmAmount, cards) {
             selectedPackage = {
                 lm: lmAmount,
-                sat: lmCore.lmToSat(lmAmount),
+                sat: LM.lmToSat(lmAmount),
                 cards: cards
             };
 
@@ -1398,60 +645,60 @@
             event.currentTarget.classList.add('selected');
 
             document.getElementById('startButton').disabled = false;
-            lmCore.debugLog(`📦 Pacote selecionado: ${lmAmount} LM, ${cards} cartões`);
+            LM.log(`📦 Pacote: ${lmAmount} LM, ${cards} cartões`);
         }
 
         async function startGame() {
             if (!selectedPackage) {
-                showAlert('packageAlert', '⚠️ Selecione um pacote primeiro', 'danger');
+                showAlert('packageAlert', '⚠️ Selecione um pacote', 'danger');
                 return;
             }
 
-            lmCore.debugLog('🎮 Iniciando jogo...');
+            LM.log('🎮 Iniciando jogo...');
 
-            const userData = await FirebaseDB.get(`users/${currentUser}`);
-            if (!userData.success || !userData.data) {
-                showAlert('packageAlert', '❌ Erro ao carregar dados do usuário. Usando modo offline.', 'warning');
-                initializeGame();
+            const userData = await DB.get(`users/${currentUser}`);
+            if (!userData) {
+                showAlert('packageAlert', '❌ Erro ao carregar dados', 'danger');
                 return;
             }
 
-            const currentBalance = userData.data.balanceSat || 0;
+            const currentBalance = userData.balanceSat || 0;
+            LM.log(`💰 Saldo atual: ${currentBalance} sat`);
+            LM.log(`💸 Custo: ${selectedPackage.sat} sat`);
 
             if (currentBalance < selectedPackage.sat) {
-                const needed = lmCore.satToLm(selectedPackage.sat - currentBalance);
+                const needed = LM.satToLm(selectedPackage.sat - currentBalance);
                 showAlert('packageAlert', 
-                    `⚠️ Saldo insuficiente! Você precisa de mais ${lmCore.formatLM(needed, 4)} LM. Entre em contato com o administrador para adicionar saldo via Pix (61999487649).`, 
+                    `⚠️ Saldo insuficiente! Faltam ${LM.formatLM(needed, 4)} LM. Contato: 61999487649`, 
                     'danger');
-                lmCore.debugLog(`💸 Saldo insuficiente: ${currentBalance} < ${selectedPackage.sat}`);
                 return;
             }
 
             const newBalance = currentBalance - selectedPackage.sat;
-            const updateResult = await FirebaseDB.update(`users/${currentUser}`, {
+            const updated = await DB.update(`users/${currentUser}`, {
                 balanceSat: newBalance
             });
 
-            if (!updateResult.success) {
-                showAlert('packageAlert', '❌ Erro ao processar pagamento', 'danger');
+            if (!updated) {
+                showAlert('packageAlert', '❌ Erro ao processar', 'danger');
                 return;
             }
 
-            await FirebaseDB.push('transactions', {
+            await DB.push('transactions', {
                 userId: currentUser,
-                userName: userData.data.nickname,
+                userName: userData.nickname,
                 type: 'game_purchase',
                 amountSat: selectedPackage.sat,
                 amountLM: selectedPackage.lm,
-                description: `Compra de pacote: ${selectedPackage.cards} cartões`,
+                description: `Pacote: ${selectedPackage.cards} cartões`,
                 timestamp: Date.now()
             });
 
-            lmCore.debugLog('✅ Pagamento processado, inicializando jogo...');
-            initializeGame();
+            LM.log('✅ Pagamento processado');
+            initGame();
         }
 
-        function initializeGame() {
+        function initGame() {
             document.getElementById('packageSelection').classList.add('hidden');
             document.getElementById('gameBoard').classList.remove('hidden');
 
@@ -1463,7 +710,7 @@
             };
 
             renderCards();
-            lmCore.debugLog(`🎯 Jogo inicializado com ${selectedPackage.cards} cartões`);
+            LM.log(`🎯 Jogo iniciado: ${selectedPackage.cards} cartões`);
         }
 
         function generateCards(count) {
@@ -1489,7 +736,7 @@
             gameState.cards.forEach(card => {
                 const cardEl = document.createElement('div');
                 cardEl.className = 'scratch-card';
-                cardEl.innerHTML = '<div class="cover">?</div>';
+                cardEl.textContent = '?';
                 cardEl.onclick = () => revealCard(card.id);
                 container.appendChild(cardEl);
             });
@@ -1503,7 +750,7 @@
             gameState.revealed++;
 
             const cardEl = document.querySelectorAll('.scratch-card')[cardId];
-            cardEl.querySelector('.cover').remove();
+            cardEl.classList.add('revealed');
 
             if (card.isPrize) {
                 const prizeAmount = selectedPackage.lm * card.multiplier;
@@ -1511,8 +758,8 @@
                 gameState.totalPrize += prizeAmount;
 
                 cardEl.classList.add('prize');
-                cardEl.textContent = `${lmCore.formatLM(prizeAmount, 2)} LM`;
-                lmCore.debugLog(`🎉 Prêmio encontrado: ${prizeAmount} LM`);
+                cardEl.textContent = `${LM.formatLM(prizeAmount, 2)} LM`;
+                LM.log(`🎉 Prêmio: ${prizeAmount} LM`);
             } else {
                 cardEl.classList.add('no-prize');
                 cardEl.textContent = '✗';
@@ -1528,37 +775,37 @@
         function updateStats() {
             document.getElementById('cardsRevealed').textContent = gameState.revealed;
             document.getElementById('prizesFound').textContent = gameState.prizes;
-            document.getElementById('currentPrize').textContent = `${lmCore.formatLM(gameState.totalPrize, 2)} LM`;
+            document.getElementById('currentPrize').textContent = `${LM.formatLM(gameState.totalPrize, 2)} LM`;
         }
 
         async function endGame() {
             document.getElementById('gameBoard').classList.add('hidden');
             document.getElementById('prizeSummary').classList.remove('hidden');
 
-            document.getElementById('totalPrize').textContent = `${lmCore.formatLM(gameState.totalPrize, 4)} LM`;
-            lmCore.debugLog(`🏁 Fim do jogo! Prêmio total: ${gameState.totalPrize} LM`);
+            document.getElementById('totalPrize').textContent = `${LM.formatLM(gameState.totalPrize, 4)} LM`;
+            LM.log(`🏁 Fim! Prêmio: ${gameState.totalPrize} LM`);
 
             if (gameState.totalPrize > 0) {
-                const userData = await FirebaseDB.get(`users/${currentUser}`);
-                const currentBalance = userData.data.balanceSat || 0;
-                const prizeSat = lmCore.lmToSat(gameState.totalPrize);
+                const userData = await DB.get(`users/${currentUser}`);
+                const currentBalance = userData.balanceSat || 0;
+                const prizeSat = LM.lmToSat(gameState.totalPrize);
                 const newBalance = currentBalance + prizeSat;
 
-                await FirebaseDB.update(`users/${currentUser}`, {
+                await DB.update(`users/${currentUser}`, {
                     balanceSat: newBalance
                 });
 
-                await FirebaseDB.push('transactions', {
+                await DB.push('transactions', {
                     userId: currentUser,
-                    userName: userData.data.nickname,
+                    userName: userData.nickname,
                     type: 'game_prize',
                     amountSat: prizeSat,
                     amountLM: gameState.totalPrize,
-                    description: `Prêmio da raspadinha: ${gameState.prizes} cartões premiados`,
+                    description: `Prêmio: ${gameState.prizes} cartões premiados`,
                     timestamp: Date.now()
                 });
 
-                lmCore.debugLog(`💰 Prêmio creditado: ${gameState.totalPrize} LM`);
+                LM.log(`💰 Creditado: ${gameState.totalPrize} LM`);
             }
         }
 
@@ -1571,7 +818,7 @@
                 card.classList.remove('selected');
             });
             document.getElementById('startButton').disabled = true;
-            lmCore.debugLog('🔄 Jogo reiniciado');
+            LM.log('🔄 Jogo reiniciado');
         }
 
         function showAlert(elementId, message, type) {
@@ -1583,24 +830,19 @@
             alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
         }
 
+        // Conversor LM <=> BRL
+        function convertLMtoBRL(lmValue) {
+            const lm = parseFloat(lmValue) || 0;
+            const brl = LM.lmToBrl(lm);
+            document.getElementById('inputBRL').value = brl.toFixed(2);
+        }
 
-const EXCHANGE_RATE = 1000; // 1 LM = 1000 BRL (Confirmado pelo admin.html)
-
-function convertLMtoBRL(lmValue) {
-    const lm = parseFloat(lmValue) || 0;
-    // As funções lmToBrl e brlToLm já existem na classe LibreMintCore
-    const brl = lmCore.lmToBrl(lm, EXCHANGE_RATE);
-    document.getElementById('inputBRL').value = brl.toFixed(2);
-}
-
-function convertBRLtoLM(brlValue) {
-    // Para evitar loops de atualização, removemos a atualização do LM
-    const brl = parseFloat(brlValue) || 0;
-    const lm = lmCore.brlToLm(brl, EXCHANGE_RATE);
-    document.getElementById('inputLM').value = lmCore.formatLM(lm, 6); // 6 casas decimais para LM
-}
-
-
+        function convertBRLtoLM(brlValue) {
+            const brl = parseFloat(brlValue) || 0;
+            const lm = LM.brlToLm(brl);
+            document.getElementById('inputLM').value = LM.formatLM(lm, 4);
+        }
     </script>
 </body>
 </html>
+            
