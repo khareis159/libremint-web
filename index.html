@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreMint - Raspadinha Interativa</title>
+    <style>
+        /* Estilos baseados em index_base_ok.txt, com ajustes e novos componentes */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Azul Escuro */
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-grow: 1;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        /* Raspadinha */
+        .scratch-area {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .scratch-cell {
+            background: #ccc;
+            border: 3px solid #1e3c72;
+            border-radius: 10px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #1e3c72;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scratch-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .scratched .scratch-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Saldo e Info */
+        .balance-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-info .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .balance-info .label {
+            font-size: 1.2em;
+            color: #333;
+        }
+
+        /* Pacotes */
+        .package-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .package-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .package-item:hover {
+            border-color: #4CAF50;
+            background: #e6ffe6;
+        }
+
+        .package-item.selected {
+            border-color: #1e3c72;
+            background: #d1ecf1;
+            box-shadow: 0 0 5px rgba(30, 60, 114, 0.5);
+        }
+
+        .package-item h3 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .package-item p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        /* Formulários e Botões */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Rodapé Unificado */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #ddd;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        footer span {
+            color: #ffc107; /* Amarelo para filosofia */
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪙 LibreMint - Sua Raspadinha Interativa</h1>
+            <p>Jogue, ganhe e acumule LibreMint (LM), a moeda da liberdade financeira.</p>
+        </div>
+
+        <!-- Cadastro/Login -->
+        <div id="authCard" class="card">
+            <h2>👋 Bem-vindo(a)</h2>
+            <div class="form-group">
+                <label for="nickname">Seu Nickname (Para criar ou acessar sua carteira):</label>
+                <input type="text" id="nickname" placeholder="Ex: LiberdadeFinanceira">
+            </div>
+            <button class="btn" onclick="authenticateUser()">Entrar / Criar Carteira</button>
+            <div id="authAlert" class="alert"></div>
+            <p style="margin-top: 15px; font-size: 0.9em; text-align: center; color: #666;">Ao entrar, você aceita o manifesto: "Não peça permissão para ser livre - crie sistemas que garantem sua liberdade."</p>
+        </div>
+
+        <!-- Painel Principal -->
+        <div id="mainPanel" class="hidden">
+            <div class="main-grid">
+                <!-- Coluna Principal: Raspadinha e Saldo -->
+                <div class="card">
+                    <div class="balance-info">
+                        <p class="label">Saldo Atual (LM)</p>
+                        <p class="value" id="balanceLM">0.0000</p>
+                        <p class="label" id="balanceBRL">~ R$ 0.00</p>
+                    </div>
+
+                    <h2>🎰 Raspadinha da Liberdade</h2>
+                    <p style="margin-bottom: 15px; color: #666;">Custo por jogada: <span id="costLM">0.0000</span> LM (<span id="costBRL">R$ 0.00</span>)</p>
+                    
+                    <div class="scratch-area" id="scratchArea">
+                        <!-- Células da raspadinha serão geradas aqui -->
+                    </div>
+
+                    <button class="btn" id="playButton" onclick="playGame()">Jogar Agora</button>
+                    <div id="gameAlert" class="alert"></div>
+                </div>
+
+                <!-- Coluna Lateral: Pacotes e Câmbio -->
+                <div class="card">
+                    <h2>🛒 Comprar LM (Pix)</h2>
+                    <p style="margin-bottom: 15px; color: #666;">Escolha um pacote para financiar a sua liberdade. 1 LM = R$ 1000.</p>
+                    
+                    <div class="package-list" id="packageList">
+                        <!-- Pacotes serão gerados aqui -->
+                    </div>
+                    
+                    <button class="btn" id="buyButton" onclick="buyPackage()">Comprar Pacote Selecionado</button>
+                    <div id="buyAlert" class="alert"></div>
+                    
+                    <h2 style="margin-top: 30px;">💵 Resgate (LM → Pix)</h2>
+                    <div class="form-group">
+                        <label for="resgateLM">Valor para Resgate (LM):</label>
+                        <input type="number" id="resgateLM" placeholder="0.0000" step="0.0001" oninput="updateResgateBRL()">
+                        <small>Equivalente: <span id="resgateBRL">R$ 0.00</span></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pixKey">Sua Chave Pix:</label>
+                        <input type="text" id="pixKey" placeholder="CPF, Email, Telefone ou Chave Aleatória">
+                    </div>
+                    <button class="btn btn-danger" id="rescueButton" onclick="solicitarResgate()">Solicitar Resgate (Pix)</button>
+                    <div id="rescueAlert" class="alert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé Unificado -->
+    <footer>
+        LibreMint © 2025 Carlos Alberto Reis — 
+        <span style="color: #ffc107;">Código Livre · Ideias Livres · Pessoas Livres</span><br>
+        <a href="capa.html" style="color: #ffc107; text-decoration: underline;">🏴 Manifesto de Liberdade Financeira</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ========== CONFIGURAÇÃO ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5suVRJ9KrNq7RG6Ui8nfyuHhgFLWedns",
+            authDomain: "libremint-2025.firebaseapp.com",
+            databaseURL: "https://libremint-2025-default-rtdb.firebaseio.com",
+            projectId: "libremint-2025",
+            storageBucket: "libremint-2025.firebasestorage.app",
+            messagingSenderId: "443804344775",
+            appId: "1:443804344775:web:cf09abf9bb2637ae8bf9e2"
+        };
+
+        const EXCHANGE_RATE = 1000; // 1 LM = R$ 1000
+        const GAME_COST_LM = 0.0001; // Custo por jogada em LM
+        const WIN_PROBABILITY = 0.15; // 15% de chance de ganhar
+        const PRIZES_LM = [0.0005, 0.001, 0.005]; // Prêmios em LM
+
+        const PACKAGES = [
+            { brl: 1.00, lm: 0.001, name: "Pacote Micro" },
+            { brl: 2.00, lm: 0.002, name: "Pacote Pequeno" },
+            { brl: 5.00, lm: 0.005, name: "Pacote Médio" },
+            { brl: 10.00, lm: 0.010, name: "Pacote Grande" }
+        ];
+
+        // ========== VARIÁVEIS ==========
+        let database;
+        let currentUser = null;
+        let userRef = null;
+        let selectedPackage = null;
+        let gameActive = false;
+
+        // ========== LIBREMINT CORE ==========
+        const LM = {
+            SAT_PER_LM: 100000000,
+            
+            lmToSat(lm) {
+                return Math.round(lm * this.SAT_PER_LM);
+            },
+            
+            satToLm(sat) {
+                return sat / this.SAT_PER_LM;
+            },
+            
+            formatLM(lm, decimals = 4) {
+                return parseFloat(lm).toFixed(decimals);
+            },
+            
+            formatSat(sat) {
+                return Math.round(sat).toLocaleString('pt-BR');
+            },
+            
+            brlToLm(brl) {
+                return brl / EXCHANGE_RATE;
+            },
+            
+            lmToBrl(lm) {
+                return lm * EXCHANGE_RATE;
+            },
+            
+            brlToSat(brl) {
+                return this.lmToSat(this.brlToLm(brl));
+            },
+            
+            satToBrl(sat) {
+                return this.lmToBrl(this.satToLm(sat));
+            },
+
+            log(msg) {
+                console.log(msg);
+            }
+        };
+
+        // ========== FIREBASE ==========
+        const DB = {
+            async init() {
+                try {
+                    firebase.initializeApp(firebaseConfig);
+                    database = firebase.database();
+                    LM.log('✅ Firebase conectado');
+                    return true;
+                } catch (error) {
+                    LM.log('❌ Erro Firebase: ' + error.message);
+                    return false;
+                }
+            },
+
+            async update(path, data) {
+                try {
+                    await database.ref(path).update(data);
+                    return true;
+                } catch (error) {
+                    LM.log(`❌ Erro ao atualizar: ${error.message}`);
+                    return false;
+                }
+            },
+
+            async push(path, data) {
+                try {
+                    const ref = database.ref(path).push();
+                    await ref.set(data);
+                    return ref.key;
+                } catch (error) {
+                    LM.log(`❌ Erro ao adicionar: ${error.message}`);
+                    return false;
+                }
+            },
+            
+            async get(path) {
+                try {
+                    const snapshot = await database.ref(path).once('value');
+                    return snapshot.val();
+                } catch (error) {
+                    LM.log(`❌ Erro ao ler: ${error.message}`);
+                    return null;
+                }
+            }
+        };
+
+        // ========== AUTENTICAÇÃO ==========
+        async function authenticateUser() {
+            const nickname = document.getElementById('nickname').value.trim();
+            if (!nickname) {
+                showAlert('authAlert', '⚠️ Digite um Nickname para continuar.', 'danger');
+                return;
+            }
+
+            const initialized = await DB.init();
+            if (!initialized) {
+                showAlert('authAlert', '❌ Erro ao conectar Firebase', 'danger');
+                return;
+            }
+            
+            const userId = btoa(nickname).replace(/=/g, ''); // Simples hash para ID
+
+            userRef = database.ref('users/' + userId);
+            
+            userRef.once('value', (snapshot) => {
+                const userData = snapshot.val();
+                
+                if (userData) {
+                    currentUser = { ...userData, id: userId };
+                    LM.log(`✅ Usuário existente logado: ${currentUser.nickname}`);
+                    setupUserListener();
+                    
+                } else {
+                    // Novo usuário: Saldo inicial de 0.01 LM
+                    const initialBalanceSat = LM.lmToSat(0.01);
+                    const newUser = {
+                        nickname: nickname,
+                        balanceSat: initialBalanceSat,
+                        address: 'LM-' + userId.substring(0, 8),
+                        createdAt: Date.now()
+                    };
+                    
+                    userRef.set(newUser)
+                        .then(() => {
+                            currentUser = { ...newUser, id: userId };
+                            LM.log(`✅ Novo usuário criado: ${currentUser.nickname}`);
+                            // Registra transação inicial
+                            DB.push('transactions', {
+                                userId: currentUser.id,
+                                userName: currentUser.nickname,
+                                type: 'initial_deposit',
+                                amountSat: initialBalanceSat,
+                                amountLM: 0.01,
+                                amountBRL: LM.satToBrl(initialBalanceSat),
+                                description: 'Depósito inicial LibreMint',
+                                timestamp: Date.now()
+                            });
+                            setupUserListener();
+                        })
+                        .catch(error => {
+                            showAlert('authAlert', `❌ Erro ao criar usuário: ${error.message}`, 'danger');
+                        });
+                }
+            });
+        }
+
+        function setupUserListener() {
+            userRef.on('value', (snapshot) => {
+                currentUser = { ...snapshot.val(), id: currentUser.id };
+                updateUI();
+                document.getElementById('authCard').classList.add('hidden');
+                document.getElementById('mainPanel').classList.remove('hidden');
+            });
+        }
+
+        function updateUI() {
+            const balanceSat = currentUser.balanceSat || 0;
+            const balanceLM = LM.satToLm(balanceSat);
+            const balanceBRL = LM.satToBrl(balanceSat);
+
+            document.getElementById('balanceLM').textContent = LM.formatLM(balanceLM, 4);
+            document.getElementById('balanceBRL').textContent = `~ R$ ${balanceBRL.toFixed(2)}`;
+            
+            // Atualiza custo do jogo
+            document.getElementById('costLM').textContent = LM.formatLM(GAME_COST_LM, 4);
+            document.getElementById('costBRL').textContent = `R$ ${LM.lmToBrl(GAME_COST_LM).toFixed(2)}`;
+
+            // Gera pacotes
+            generatePackages();
+            
+            // Atualiza resgate
+            updateResgateBRL();
+        }
+
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+        }
+        
+        // ========== PACOTES ==========
+        function generatePackages() {
+            const list = document.getElementById('packageList');
+            list.innerHTML = '';
+            
+            PACKAGES.forEach((pkg, index) => {
+                const item = document.createElement('div');
+                item.className = 'package-item';
+                item.dataset.index = index;
+                item.innerHTML = `
+                    <h3>${pkg.name}</h3>
+                    <p>R$ ${pkg.brl.toFixed(2)} = ${LM.formatLM(pkg.lm, 4)} LM</p>
+                `;
+                item.onclick = () => selectPackage(index);
+                list.appendChild(item);
+            });
+            
+            selectPackage(0); // Seleciona o primeiro por padrão
+        }
+        
+        function selectPackage(index) {
+            const list = document.getElementById('packageList');
+            Array.from(list.children).forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            const selectedItem = list.querySelector(`[data-index="${index}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+                selectedPackage = PACKAGES[index];
+            }
+        }
+        
+        function buyPackage() {
+            if (!selectedPackage) {
+                showAlert('buyAlert', '⚠️ Selecione um pacote para comprar.', 'danger');
+                return;
+            }
+            
+            // Simulação de compra via Pix
+            const pixInfo = `
+                Compra de ${selectedPackage.name} (${LM.formatLM(selectedPackage.lm, 4)} LM) no valor de R$ ${selectedPackage.brl.toFixed(2)}.
+                
+                **Instruções de Pagamento (Simulado):**
+                1. Envie R$ ${selectedPackage.brl.toFixed(2)} via Pix para a chave: **LM.PIX@LIBREMINT.COM**
+                2. Na descrição do Pix, coloque seu Nickname: **${currentUser.nickname}**
+                
+                O saldo será creditado automaticamente após a confirmação do pagamento.
+            `;
+            
+            showAlert('buyAlert', pixInfo, 'info');
+            
+            // No mundo real, haveria um webhook aqui. Simulamos a adição de saldo.
+            setTimeout(() => {
+                const amountSat = LM.lmToSat(selectedPackage.lm);
+                const newBalanceSat = (currentUser.balanceSat || 0) + amountSat;
+                
+                userRef.update({ balanceSat: newBalanceSat })
+                    .then(() => {
+                        showAlert('buyAlert', `✅ ${selectedPackage.name} comprado! ${LM.formatLM(selectedPackage.lm, 4)} LM adicionados ao seu saldo.`, 'success');
+                        
+                        DB.push('transactions', {
+                            userId: currentUser.id,
+                            userName: currentUser.nickname,
+                            type: 'purchase_pix',
+                            amountSat: amountSat,
+                            amountLM: selectedPackage.lm,
+                            amountBRL: selectedPackage.brl,
+                            description: `Compra de ${selectedPackage.name} via Pix`,
+                            timestamp: Date.now()
+                        });
+                    })
+                    .catch(error => {
+                        showAlert('buyAlert', `❌ Erro ao creditar LM: ${error.message}`, 'danger');
+                    });
+            }, 3000); // Simula 3 segundos para a confirmação do Pix
+        }
+
+        // ========== JOGO DA RASPADINHA ==========
+        function generateScratchArea(prizeLM = 0) {
+            const area = document.getElementById('scratchArea');
+            area.innerHTML = '';
+            gameActive = true;
+            
+            const cells = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+            
+            if (prizeLM > 0) {
+                // Se houver prêmio, garante que 3 células tenham o valor do prêmio
+                const prizeValue = LM.formatLM(prizeLM, 4);
+                const prizeIndices = [];
+                while (prizeIndices.length < 3) {
+                    const index = Math.floor(Math.random() * 9);
+                    if (!prizeIndices.includes(index)) {
+                        prizeIndices.push(index);
+                    }
+                }
+                
+                prizeIndices.forEach(index => cells[index] = prizeValue);
+                
+                // Preenche o restante com valores aleatórios (perdedores)
+                for (let i = 0; i < 9; i++) {
+                    if (cells[i] === 0) {
+                        const randomPrize = PRIZES_LM[Math.floor(Math.random() * PRIZES_LM.length)];
+                        cells[i] = LM.formatLM(randomPrize, 4);
+                    }
+                }
+                
+            } else {
+                // Jogo perdido: todos os valores diferentes
+                for (let i = 0; i < 9; i++) {
+                    const randomPrize = PRIZES_LM[Math.floor(Math.random() * PRIZES_LM.length)];
+                    cells[i] = LM.formatLM(randomPrize, 4);
+                }
+            }
+            
+            cells.forEach((value, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'scratch-cell';
+                cell.dataset.value = value;
+                cell.dataset.index = index;
+                cell.innerHTML = `
+                    <div class="scratch-overlay">SCRATCH</div>
+                    ${value} LM
+                `;
+                cell.onclick = () => scratchCell(cell);
+                area.appendChild(cell);
+            });
+            
+            area.dataset.prize = prizeLM;
+            area.dataset.scratchedCount = 0;
+        }
+        
+        function scratchCell(cell) {
+            if (!gameActive || cell.classList.contains('scratched')) return;
+            
+            cell.classList.add('scratched');
+            
+            const area = document.getElementById('scratchArea');
+            area.dataset.scratchedCount = parseInt(area.dataset.scratchedCount) + 1;
+            
+            // Lógica de verificação após raspar todas as células
+            if (parseInt(area.dataset.scratchedCount) === 9) {
+                checkWin();
+            }
+        }
+        
+        function checkWin() {
+            gameActive = false;
+            const prizeLM = parseFloat(document.getElementById('scratchArea').dataset.prize);
+            
+            if (prizeLM > 0) {
+                const amountSat = LM.lmToSat(prizeLM);
+                const newBalanceSat = (currentUser.balanceSat || 0) + amountSat;
+                
+                userRef.update({ balanceSat: newBalanceSat })
+                    .then(() => {
+                        showAlert('gameAlert', `🎉 PARABÉNS! Você ganhou ${LM.formatLM(prizeLM, 4)} LM!`, 'success');
+                        
+                        DB.push('transactions', {
+                            userId: currentUser.id,
+                            userName: currentUser.nickname,
+                            type: 'prize_win',
+                            amountSat: amountSat,
+                            amountLM: prizeLM,
+                            amountBRL: LM.lmToBrl(prizeLM),
+                            description: `Prêmio Raspadinha: ${LM.formatLM(prizeLM, 4)} LM`,
+                            timestamp: Date.now()
+                        });
+                    })
+                    .catch(error => {
+                        showAlert('gameAlert', `❌ Erro ao creditar prêmio: ${error.message}`, 'danger');
+                    });
+            } else {
+                showAlert('gameAlert', '😢 Que pena! Tente novamente para a próxima rodada.', 'danger');
+            }
+        }
+
+        function playGame() {
+            if (gameActive) return; // Evita cliques múltiplos
+            
+            const costSat = LM.lmToSat(GAME_COST_LM);
+            const currentBalanceSat = currentUser.balanceSat || 0;
+            
+            if (currentBalanceSat < costSat) {
+                showAlert('gameAlert', '⚠️ Saldo insuficiente para jogar. Compre mais LM.', 'danger');
+                return;
+            }
+            
+            // 1. Debita o custo
+            const newBalanceSat = currentBalanceSat - costSat;
+            
+            userRef.update({ balanceSat: newBalanceSat })
+                .then(() => {
+                    // 2. Registra a transação de débito
+                    DB.push('transactions', {
+                        userId: currentUser.id,
+                        userName: currentUser.nickname,
+                        type: 'game_purchase',
+                        amountSat: -costSat,
+                        amountLM: -GAME_COST_LM,
+                        amountBRL: -LM.lmToBrl(GAME_COST_LM),
+                        description: 'Custo da Raspadinha',
+                        timestamp: Date.now()
+                    });
+                    
+                    // 3. Determina o prêmio
+                    let prizeLM = 0;
+                    if (Math.random() < WIN_PROBABILITY) {
+                        prizeLM = PRIZES_LM[Math.floor(Math.random() * PRIZES_LM.length)];
+                    }
+                    
+                    // 4. Inicia o jogo
+                    showAlert('gameAlert', 'Jogo iniciado! Raspe as células para descobrir o resultado.', 'info');
+                    generateScratchArea(prizeLM);
+                })
+                .catch(error => {
+                    showAlert('gameAlert', `❌ Erro ao debitar custo: ${error.message}`, 'danger');
+                });
+        }
+        
+        // ========== RESGATE (LM -> PIX) ==========
+        function updateResgateBRL() {
+            const resgateLM = parseFloat(document.getElementById('resgateLM').value) || 0;
+            const resgateBRL = LM.lmToBrl(resgateLM);
+            document.getElementById('resgateBRL').textContent = `R$ ${resgateBRL.toFixed(2)}`;
+            
+            document.getElementById('rescueButton').disabled = resgateLM <= 0;
+        }
+        
+        async function solicitarResgate() {
+            const resgateLM = parseFloat(document.getElementById('resgateLM').value) || 0;
+            const pixKey = document.getElementById('pixKey').value.trim();
+            
+            if (resgateLM <= 0) {
+                showAlert('rescueAlert', '⚠️ O valor de resgate deve ser maior que zero.', 'danger');
+                return;
+            }
+            
+            if (!pixKey) {
+                showAlert('rescueAlert', '⚠️ Digite sua Chave Pix para o resgate.', 'danger');
+                return;
+            }
+            
+            const resgateSat = LM.lmToSat(resgateLM);
+            const currentBalanceSat = currentUser.balanceSat || 0;
+            
+            if (currentBalanceSat < resgateSat) {
+                showAlert('rescueAlert', '⚠️ Saldo insuficiente para o resgate solicitado.', 'danger');
+                return;
+            }
+            
+            // 1. Cria a solicitação de saque (status: pending)
+            const requestData = {
+                userId: currentUser.id,
+                userName: currentUser.nickname,
+                amountSat: resgateSat,
+                amountLM: resgateLM,
+                amountBRL: LM.lmToBrl(resgateLM),
+                pixKey: pixKey,
+                status: 'pending',
+                timestamp: Date.now()
+            };
+            
+            const requestId = await DB.push('withdrawal_requests', requestData);
+            
+            if (requestId) {
+                showAlert('rescueAlert', `✅ Solicitação de resgate de ${LM.formatLM(resgateLM, 4)} LM (R$ ${LM.lmToBrl(resgateLM).toFixed(2)}) enviada. Aguardando aprovação do Agente de Câmbio.`, 'success');
+                
+                // 2. Debita o LM do usuário imediatamente para evitar gastos duplos
+                const newBalanceSat = currentBalanceSat - resgateSat;
+                
+                userRef.update({ balanceSat: newBalanceSat })
+                    .then(() => {
+                        // 3. Registra a transação de débito (saque pendente)
+                        DB.push('transactions', {
+                            userId: currentUser.id,
+                            userName: currentUser.nickname,
+                            type: 'withdrawal_pending',
+                            amountSat: -resgateSat,
+                            amountLM: -resgateLM,
+                            amountBRL: -LM.lmToBrl(resgateLM),
+                            description: `Resgate Pendente para Pix: ${pixKey}`,
+                            timestamp: Date.now()
+                        });
+                    })
+                    .catch(error => {
+                        showAlert('rescueAlert', `❌ Erro ao debitar LM: ${error.message}. Contate o suporte.`, 'danger');
+                    });
+            } else {
+                showAlert('rescueAlert', '❌ Erro ao enviar solicitação. Tente novamente.', 'danger');
+            }
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            generatePackages();
+            document.getElementById('playButton').disabled = true; // Desabilita até logar
+            document.getElementById('rescueButton').disabled = true; // Desabilita até logar
+        });
+    </script>
+</body>
+</html>
