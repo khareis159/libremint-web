@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreMint - Painel Administrativo do Agente de Câmbio</title>
+    <style>
+        /* Estilos baseados em admin_base_ok.txt, com ajustes e novos componentes */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Azul Escuro */
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            flex-grow: 1;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+
+        .login-section {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 100px auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .login-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .admin-grid-main {
+            grid-template-columns: 1fr 2fr;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #4CAF50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-secondary {
+            background: #667eea;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .users-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .user-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .user-card .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-card .user-name {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .user-card .user-balance {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 1.1em;
+        }
+
+        .user-card .user-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .transaction-log {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .transaction-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-item.pix-in {
+            background-color: #e6ffe6;
+        }
+
+        .transaction-item.pix-out {
+            background-color: #ffe6e6;
+        }
+        
+        .transaction-item.agent-tx {
+            background-color: #fff3cd; /* Amarelo para transações de agente */
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-box .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        .stat-box .label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .debug-panel {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 0.75em;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .pix-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffc107;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pix-info strong {
+            color: #856404;
+            font-size: 1.2em;
+        }
+        
+        .withdrawal-request, .candidature-item {
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #fff3cd;
+        }
+        
+        .withdrawal-request p, .candidature-item p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .withdrawal-request .actions, .candidature-item .actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .agent-card {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        /* Rodapé Unificado */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9em;
+            color: #ddd;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        footer span {
+            color: #ffc107; /* Amarelo para filosofia */
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .admin-grid-main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🪙 LibreMint - Painel Administrativo do Agente de Câmbio</h1>
+            <p>Gerencie usuários, saldos e transações LibreMint. Sua liquidez é a garantia da liberdade!</p>
+        </div>
+
+        <!-- Login -->
+        <div id="loginSection" class="login-section">
+            <h2>🔐 Acesso Restrito</h2>
+            <div class="form-group">
+                <label>Senha de Administrador:</label>
+                <input type="password" id="adminPassword" placeholder="Digite a senha">
+            </div>
+            <button class="btn" onclick="login()">Entrar</button>
+            <div id="loginAlert" class="alert"></div>
+            <div id="debugLog" class="debug-panel"></div>
+        </div>
+
+        <!-- Painel Principal -->
+        <div id="adminPanel" class="hidden">
+            <!-- Estatísticas -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="value" id="totalUsers">0</div>
+                    <div class="label">Usuários Ativos</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="totalLM">0</div>
+                    <div class="label">Total LM em Circulação</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="totalTransactions">0</div>
+                    <div class="label">Transações Realizadas</div>
+                </div>
+                <div class="stat-box">
+                    <div class="value" id="pendingWithdrawalsCount">0</div>
+                    <div class="label">Saques Pendentes</div>
+                </div>
+            </div>
+
+            <div class="admin-grid admin-grid-main">
+                <!-- Gerenciar Saques e Liquidez -->
+                <div class="card">
+                    <h2>💸 Controle de Saques (Aprovação Manual)</h2>
+                    
+                    <div class="pix-info">
+                        <strong>Limite Operacional:</strong><br>
+                        <span id="operationalLimit">R$ 0,00</span>
+                        <small>(Reserva BRL do Agente Logado)</small>
+                    </div>
+                    
+                    <div id="withdrawalRequests" style="max-height: 400px; overflow-y: auto;">
+                        <p style="text-align: center; color: #666;">Nenhuma solicitação de saque pendente.</p>
+                    </div>
+                    
+                    <div id="withdrawalAlert" class="alert"></div>
+                </div>
+
+                <!-- Gestão de Agentes e Depósitos -->
+                <div class="admin-grid">
+                    <!-- Candidaturas de Agentes -->
+                    <div class="card">
+                        <h2>🧑‍🤝‍🧑 Candidaturas de Agentes</h2>
+                        
+                        <div class="form-group">
+                            <label>Candidato (Usuário):</label>
+                            <select id="candidateSelect">
+                                <option value="">Selecione um usuário para candidatar...</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-secondary" onclick="candidatarUsuario()">Candidatar Usuário</button>
+                        
+                        <h3 style="margin-top: 20px; font-size: 1.2em; color: #1e3c72;">Candidaturas Pendentes</h3>
+                        <div id="pendingCandidatures" style="max-height: 150px; overflow-y: auto;">
+                            <p style="text-align: center; color: #666;">Nenhuma candidatura pendente.</p>
+                        </div>
+                        <div id="candidatureAlert" class="alert"></div>
+                    </div>
+                    
+                    <!-- Gerenciar Depósitos (Pix Recebido) -->
+                    <div class="card">
+                        <h2>💰 Gerenciar Depósitos (LM)</h2>
+                        
+                        <div class="form-group">
+                            <label>Usuário:</label>
+                            <select id="userSelect">
+                                <option value="">Selecione...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Valor em Reais (R$):</label>
+                            <input type="number" id="amountBRL" placeholder="0.00" step="0.01" min="0">
+                            <small>Equivalente: <span id="equivalentLM">0</span> LM (<span id="equivalentSat">0</span> sat)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descrição:</label>
+                            <input type="text" id="transactionDescription" placeholder="Ex: Depósito via Pix recebido">
+                        </div>
+
+                        <button class="btn" onclick="processDeposit()">Processar Depósito (Pix Recebido)</button>
+                        
+                        <div id="transactionAlert" class="alert"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Log de Transações e Usuários -->
+            <div class="admin-grid">
+                <!-- Visão Geral -->
+                <div class="card">
+                    <h2>📊 Log de Transações Recentes</h2>
+                    <div class="transaction-log" id="transactionLog">
+                        <p style="text-align: center; color: #666;">Carregando...</p>
+                    </div>
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="agentFilter">Filtrar por Agente:</label>
+                        <select id="agentFilter" onchange="updateTransactionLog(null, this.value)">
+                            <option value="">Todos os Agentes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Lista de Usuários -->
+                <div class="card">
+                    <h2>👥 Usuários Cadastrados</h2>
+                    <div class="users-list" id="usersList">
+                        <p style="text-align: center; color: #666;">Carregando...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debug -->
+            <div class="card">
+                <h2>🔧 Log do Sistema</h2>
+                <div id="systemDebug" class="debug-panel">
+                    Sistema inicializado...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé Unificado -->
+    <footer>
+        LibreMint © 2025 Carlos Alberto Reis — 
+        <span style="color: #ffc107;">Código Livre · Ideias Livres · Pessoas Livres</span><br>
+        <a href="#" onclick="alert('Manifesto de Liberdade Financeira: Não peça permissão para ser livre — crie sistemas que garantem sua liberdade.'); return false;" style="color: #ffc107; text-decoration: underline;">🏴 Manifesto de Liberdade Financeira</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // ========== CONFIGURAÇÃO ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5suVRJ9KrNq7RG6Ui8nfyuHhgFLWedns",
+            authDomain: "libremint-2025.firebaseapp.com",
+            databaseURL: "https://libremint-2025-default-rtdb.firebaseio.com",
+            projectId: "libremint-2025",
+            storageBucket: "libremint-2025.firebasestorage.app",
+            messagingSenderId: "443804344775",
+            appId: "1:443804344775:web:cf09abf9bb2637ae8bf9e2"
+        };
+
+        const ADMIN_PASSWORD = 'libremint2025'; // ⚠️ ALTERE ESTA SENHA!
+        const EXCHANGE_RATE = 1000; // 1 LM = R$ 1000
+        const AGENT_ID = 'AGENT_001_CARLOS'; // ID fixo para o agente logado (Administrador)
+        const MIN_LM_GUARANTEE = 0.01; // Depósito de garantia mínimo em LM (1.000.000 satoshis)
+
+        // ========== VARIÁVEIS ==========
+        let database;
+        let usersData = {};
+        let withdrawalRequestsData = {};
+        let agentsData = {};
+        let candidaturesData = {};
+        let currentAgentReserve = 1000.00; // Reserva inicial simulada do agente logado
+
+        // ========== LIBREMINT CORE ==========
+        const LM = {
+            SAT_PER_LM: 100000000,
+            
+            lmToSat(lm) {
+                return Math.round(lm * this.SAT_PER_LM);
+            },
+            
+            satToLm(sat) {
+                return sat / this.SAT_PER_LM;
+            },
+            
+            formatLM(lm, decimals = 4) {
+                return parseFloat(lm).toFixed(decimals);
+            },
+            
+            formatSat(sat) {
+                return Math.round(sat).toLocaleString('pt-BR');
+            },
+            
+            brlToLm(brl) {
+                return brl / EXCHANGE_RATE;
+            },
+            
+            lmToBrl(lm) {
+                return lm * EXCHANGE_RATE;
+            },
+            
+            brlToSat(brl) {
+                return this.lmToSat(this.brlToLm(brl));
+            },
+            
+            satToBrl(sat) {
+                return this.lmToBrl(this.satToLm(sat));
+            },
+
+            log(msg, elementId = 'systemDebug') {
+                const time = new Date().toLocaleTimeString();
+                const debugLog = document.getElementById(elementId);
+                if (debugLog) {
+                    debugLog.innerHTML += `[${time}] ${msg}<br>`;
+                    debugLog.scrollTop = debugLog.scrollHeight;
+                }
+                console.log(msg);
+            }
+        };
+
+        // ========== FIREBASE ==========
+        const DB = {
+            async init() {
+                try {
+                    firebase.initializeApp(firebaseConfig);
+                    database = firebase.database();
+                    LM.log('✅ Firebase conectado');
+                    return true;
+                } catch (error) {
+                    LM.log('❌ Erro Firebase: ' + error.message);
+                    return false;
+                }
+            },
+
+            async update(path, data) {
+                try {
+                    await database.ref(path).update(data);
+                    LM.log(`✅ Atualizado: ${path}`);
+                    return true;
+                } catch (error) {
+                    LM.log(`❌ Erro ao atualizar: ${error.message}`);
+                    return false;
+                }
+            },
+
+            listen(path, callback) {
+                database.ref(path).on('value', (snapshot) => {
+                    callback(snapshot.val());
+                });
+            },
+
+            async push(path, data) {
+                try {
+                    const ref = database.ref(path).push();
+                    await ref.set(data);
+                    LM.log(`✅ Adicionado: ${path}/${ref.key}`);
+                    return ref.key;
+                } catch (error) {
+                    LM.log(`❌ Erro ao adicionar: ${error.message}`);
+                    return false;
+                }
+            },
+            
+            async set(path, data) {
+                try {
+                    await database.ref(path).set(data);
+                    LM.log(`✅ Set: ${path}`);
+                    return true;
+                } catch (error) {
+                    LM.log(`❌ Erro ao set: ${error.message}`);
+                    return false;
+                }
+            },
+            
+            async get(path) {
+                try {
+                    const snapshot = await database.ref(path).once('value');
+                    return snapshot.val();
+                } catch (error) {
+                    LM.log(`❌ Erro ao ler: ${error.message}`);
+                    return null;
+                }
+            }
+        };
+
+        // ========== LOGIN ==========
+        async function login() {
+            const password = document.getElementById('adminPassword').value;
+            
+            LM.log('🔐 Tentando login...', 'debugLog');
+            
+            if (password === ADMIN_PASSWORD) {
+                LM.log('✅ Senha correta', 'debugLog');
+                
+                const initialized = await DB.init();
+                if (!initialized) {
+                    showAlert('loginAlert', '❌ Erro ao conectar Firebase', 'danger');
+                    return;
+                }
+                
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                
+                loadData();
+                updateOperationalLimit(); // Exibe o limite operacional
+                
+            } else {
+                LM.log('❌ Senha incorreta', 'debugLog');
+                showAlert('loginAlert', '❌ Senha incorreta!', 'danger');
+            }
+        }
+
+        // ========== CARREGAR DADOS ==========
+        function loadData() {
+            LM.log('📥 Carregando dados...');
+            
+            DB.listen('users', (data) => {
+                usersData = data || {};
+                LM.log(`👥 ${Object.keys(usersData).length} usuários carregados`);
+                updateUsersList();
+                updateStats();
+                updateCandidateSelect();
+            });
+
+            DB.listen('transactions', (data) => {
+                const count = data ? Object.keys(data).length : 0;
+                LM.log(`💳 ${count} transações carregadas`);
+                updateTransactionLog(data);
+            });
+
+            DB.listen('withdrawal_requests', (data) => {
+                withdrawalRequestsData = data || {};
+                updateWithdrawalRequests();
+                updateStats();
+            });
+            
+            DB.listen('agents', (data) => {
+                agentsData = data || {};
+                updateAgentFilter();
+            });
+            
+            DB.listen('candidatures', (data) => {
+                candidaturesData = data || {};
+                updatePendingCandidatures();
+            });
+        }
+
+        // ========== ATUALIZAR LISTA ==========
+        function updateUsersList() {
+            const usersList = document.getElementById('usersList');
+            const userSelect = document.getElementById('userSelect');
+            
+            if (Object.keys(usersData).length === 0) {
+                usersList.innerHTML = '<p style="text-align: center; color: #666;">Nenhum usuário</p>';
+                userSelect.innerHTML = '<option value="">Nenhum usuário</option>';
+                return;
+            }
+
+            let html = '';
+            let selectHtml = '<option value="">Selecione...</option>';
+
+            for (const [userId, user] of Object.entries(usersData)) {
+                const balanceLM = LM.satToLm(user.balanceSat || 0);
+                const balanceBRL = LM.satToBrl(user.balanceSat || 0);
+
+                html += `
+                    <div class="user-card">
+                        <div class="user-header">
+                            <div class="user-name">${user.nickname}</div>
+                            <div class="user-balance">${LM.formatLM(balanceLM, 4)} LM</div>
+                        </div>
+                        <div class="user-info">💳 ${user.address}</div>
+                        <div class="user-info">💵 R$ ${balanceBRL.toFixed(2)}</div>
+                        <div class="user-info">🆔 ${userId.substring(0, 10)}...</div>
+                    </div>
+                `;
+
+                selectHtml += `<option value="${userId}">${user.nickname} (${LM.formatLM(balanceLM, 2)} LM)</option>`;
+            }
+
+            usersList.innerHTML = html;
+            userSelect.innerHTML = selectHtml;
+        }
+        
+        function updateCandidateSelect() {
+            const candidateSelect = document.getElementById('candidateSelect');
+            let selectHtml = '<option value="">Selecione um usuário para candidatar...</option>';
+            
+            for (const [userId, user] of Object.entries(usersData)) {
+                // Filtra usuários que não são agentes e não estão em candidatura
+                if (!agentsData[userId] && !candidaturesData[userId]) {
+                    const balanceLM = LM.satToLm(user.balanceSat || 0);
+                    selectHtml += `<option value="${userId}">${user.nickname} (${LM.formatLM(balanceLM, 2)} LM)</option>`;
+                }
+            }
+            candidateSelect.innerHTML = selectHtml;
+        }
+
+        // ========== ESTATÍSTICAS ==========
+        function updateStats() {
+            const totalUsers = Object.keys(usersData).length;
+            let totalSat = 0;
+            let pendingWithdrawals = 0;
+
+            for (const user of Object.values(usersData)) {
+                totalSat += user.balanceSat || 0;
+            }
+            
+            for (const request of Object.values(withdrawalRequestsData)) {
+                if (request.status === 'pending') {
+                    pendingWithdrawals++;
+                }
+            }
+
+            const totalLM = LM.satToLm(totalSat);
+
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('totalLM').textContent = LM.formatLM(totalLM, 2);
+            document.getElementById('pendingWithdrawalsCount').textContent = pendingWithdrawals;
+        }
+        
+        // ========== TRANSAÇÕES ==========
+        let allTransactions = {};
+        
+        function updateTransactionLog(transactions = null, agentFilter = '') {
+            if (transactions) {
+                allTransactions = transactions;
+            }
+            
+            const logDiv = document.getElementById('transactionLog');
+            
+            if (!allTransactions || Object.keys(allTransactions).length === 0) {
+                logDiv.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma transação</p>';
+                return;
+            }
+            
+            const txArray = Object.entries(allTransactions).map(([id, tx]) => ({id, ...tx}));
+            txArray.sort((a, b) => b.timestamp - a.timestamp);
+
+            let html = '';
+            let totalTx = 0;
+
+            for (const tx of txArray.slice(0, 50)) {
+                
+                // Filtro por Agente
+                if (agentFilter && tx.agentId !== agentFilter) {
+                    continue;
+                }
+                
+                const date = new Date(tx.timestamp).toLocaleString('pt-BR');
+                const amountLM = LM.satToLm(tx.amountSat || 0);
+                
+                let cssClass = '';
+                if (tx.type.includes('purchase') || tx.type.includes('remove') || tx.type.includes('withdrawal_approved')) {
+                    cssClass = 'pix-out'; // Gasto do usuário ou saque
+                } else if (tx.type.includes('prize') || tx.type.includes('deposit')) {
+                    cssClass = 'pix-in'; // Ganho do usuário ou depósito
+                }
+                
+                totalTx++;
+                
+                const agentInfo = tx.agentId ? ` | Agente: ${agentsData[tx.agentId]?.nickname || tx.agentId.split('_')[1]}` : '';
+
+                html += `
+                    <div class="transaction-item ${cssClass}">
+                        <strong>${tx.description}</strong><br>
+                        <small>Usuário: ${tx.userName} | ${LM.formatLM(amountLM, 4)} LM | R$ ${(tx.amountBRL || 0).toFixed(2)} ${agentInfo}</small><br>
+                        <small>${date} | Tipo: ${tx.type}</small>
+                    </div>
+                `;
+            }
+
+            logDiv.innerHTML = html;
+            document.getElementById('totalTransactions').textContent = totalTx;
+        }
+        
+        function updateAgentFilter() {
+            const filterSelect = document.getElementById('agentFilter');
+            let selectHtml = '<option value="">Todos os Agentes</option>';
+
+            for (const [id, agent] of Object.entries(agentsData)) {
+                if (agent.status === 'aprovado') {
+                    selectHtml += `<option value="${id}">${agent.nickname} (R$ ${LM.satToBrl(agent.limiteOperacionalSat).toFixed(2)})</option>`;
+                }
+            }
+            
+            filterSelect.innerHTML = selectHtml;
+        }
+
+        // ========== CONVERSÃO TEMPO REAL (DEPÓSITO) ==========
+        document.getElementById('amountBRL')?.addEventListener('input', function() {
+            const brl = parseFloat(this.value) || 0;
+            const lm = LM.brlToLm(brl);
+            const sat = LM.brlToSat(brl);
+            
+            document.getElementById('equivalentLM').textContent = LM.formatLM(lm, 4);
+            document.getElementById('equivalentSat').textContent = LM.formatSat(sat);
+        });
+
+        // ========== PROCESSAR DEPÓSITO (PIX RECEBIDO) ==========
+        async function processDeposit() {
+            const userId = document.getElementById('userSelect').value;
+            const amountBRL = parseFloat(document.getElementById('amountBRL').value) || 0;
+            const description = document.getElementById('transactionDescription').value;
+
+            LM.log(`💸 Processando Depósito para: ${userId}`);
+
+            if (!userId) {
+                showAlert('transactionAlert', '⚠️ Selecione um usuário', 'danger');
+                return;
+            }
+
+            if (amountBRL <= 0) {
+                showAlert('transactionAlert', '⚠️ Valor deve ser maior que zero', 'danger');
+                return;
+            }
+            
+            // Verifica Limite Operacional
+            if (amountBRL > currentAgentReserve) {
+                showAlert('transactionAlert', `⚠️ Valor excede o Limite Operacional (R$ ${currentAgentReserve.toFixed(2)}).`, 'danger');
+                return;
+            }
+
+            const user = usersData[userId];
+            if (!user) {
+                showAlert('transactionAlert', '❌ Usuário não encontrado', 'danger');
+                return;
+            }
+
+            const amountSat = LM.brlToSat(amountBRL);
+            const amountLM = LM.satToLm(amountSat);
+            const newBalanceSat = (user.balanceSat || 0) + amountSat;
+
+            const updated = await DB.update(`users/${userId}`, {
+                balanceSat: newBalanceSat
+            });
+
+            if (!updated) {
+                showAlert('transactionAlert', '❌ Erro ao atualizar saldo', 'danger');
+                return;
+            }
+
+            await DB.push('transactions', {
+                userId: userId,
+                userName: user.nickname,
+                type: 'deposit_pix',
+                amountSat: amountSat,
+                amountLM: amountLM,
+                amountBRL: amountBRL,
+                description: description || `Depósito via Pix (R$ ${amountBRL.toFixed(2)})`,
+                timestamp: Date.now(),
+                agentId: AGENT_ID // Adiciona ID do Agente
+            });
+            
+            // Simula a redução do limite operacional (o agente usou sua reserva BRL para comprar LM e dar ao usuário)
+            currentAgentReserve -= amountBRL;
+            updateOperationalLimit();
+
+            showAlert('transactionAlert', `✅ Depósito de ${LM.formatLM(amountLM, 4)} LM processado para ${user.nickname}. Novo saldo: ${LM.formatLM(LM.satToLm(newBalanceSat), 4)} LM`, 'success');
+            
+            document.getElementById('amountBRL').value = '';
+            document.getElementById('transactionDescription').value = '';
+        }
+        
+        // ========== ATUALIZAR SOLICITAÇÕES DE SAQUE ==========
+        function updateWithdrawalRequests() {
+            const requestsDiv = document.getElementById('withdrawalRequests');
+            let html = '';
+            let pendingCount = 0;
+            
+            const requestsArray = Object.entries(withdrawalRequestsData).map(([id, req]) => ({id, ...req}));
+            requestsArray.sort((a, b) => a.timestamp - b.timestamp); // Mais antigos primeiro
+
+            for (const request of requestsArray) {
+                if (request.status === 'pending') {
+                    pendingCount++;
+                    html += `
+                        <div class="withdrawal-request">
+                            <p><strong>Usuário:</strong> ${request.userName}</p>
+                            <p><strong>Valor:</strong> ${LM.formatLM(request.amountLM, 4)} LM (R$ ${parseFloat(request.amountBRL).toFixed(2)})</p>
+                            <p><strong>Chave Pix:</strong> ${request.pixKey}</p>
+                            <p><strong>Data:</strong> ${new Date(request.timestamp).toLocaleString('pt-BR')}</p>
+                            <div class="actions">
+                                <button class="btn" style="width: 50%;" onclick="approveWithdrawal('${request.id}', '${request.userId}', ${request.amountSat}, ${request.amountLM}, ${request.amountBRL})">Aprovar e Enviar Pix</button>
+                                <button class="btn btn-danger" style="width: 50%;" onclick="rejectWithdrawal('${request.id}', '${request.userId}')">Rejeitar</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (pendingCount === 0) {
+                requestsDiv.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma solicitação de saque pendente.</p>';
+            } else {
+                requestsDiv.innerHTML = html;
+            }
+            
+            document.getElementById('pendingWithdrawalsCount').textContent = pendingCount;
+        }
+        
+        // ========== APROVAR SAQUE ==========
+        async function approveWithdrawal(requestId, userId, amountSat, amountLM, amountBRL) {
+            LM.log(`✅ Aprovando saque ${requestId} para ${userId}`);
+            
+            const user = usersData[userId];
+            if (!user) {
+                showAlert('withdrawalAlert', '❌ Usuário não encontrado', 'danger');
+                return;
+            }
+            
+            // Verifica Limite Operacional
+            if (amountBRL > currentAgentReserve) {
+                showAlert('withdrawalAlert', `⚠️ Valor excede o Limite Operacional (R$ ${currentAgentReserve.toFixed(2)}).`, 'danger');
+                return;
+            }
+            
+            const currentBalance = user.balanceSat || 0;
+            const newBalanceSat = currentBalance - amountSat;
+            
+            if (newBalanceSat < 0) {
+                showAlert('withdrawalAlert', `❌ Saldo insuficiente do usuário ${user.nickname}`, 'danger');
+                await rejectWithdrawal(requestId, userId, "Saldo insuficiente para saque.");
+                return;
+            }
+            
+            // 1. Atualizar saldo do usuário
+            const updated = await DB.update(`users/${userId}`, {
+                balanceSat: newBalanceSat
+            });
+
+            if (!updated) {
+                showAlert('withdrawalAlert', '❌ Erro ao atualizar saldo do usuário', 'danger');
+                return;
+            }
+            
+            // 2. Registrar transação de saque
+            await DB.push('transactions', {
+                userId: userId,
+                userName: user.nickname,
+                type: 'withdrawal_approved',
+                amountSat: -amountSat, // Negativo para indicar saída
+                amountLM: -amountLM,
+                amountBRL: -amountBRL,
+                description: `Saque via Pix aprovado (R$ ${amountBRL.toFixed(2)})`,
+                timestamp: Date.now(),
+                agentId: AGENT_ID // Adiciona ID do Agente
+            });
+            
+            // 3. Atualizar status da solicitação
+            await DB.update(`withdrawal_requests/${requestId}`, {
+                status: 'approved',
+                processedAt: Date.now(),
+                agentId: AGENT_ID
+            });
+            
+            // Simula a redução do limite operacional (o agente usou sua reserva BRL para dar ao usuário)
+            currentAgentReserve -= amountBRL;
+            updateOperationalLimit();
+
+            showAlert('withdrawalAlert', `✅ Saque de R$ ${amountBRL.toFixed(2)} para ${user.nickname} APROVADO e processado!`, 'success');
+        }
+
+        // ========== REJEITAR SAQUE ==========
+        async function rejectWithdrawal(requestId, userId, reason = "Rejeitado pelo agente de câmbio.") {
+            LM.log(`❌ Rejeitando saque ${requestId} para ${userId}`);
+            
+            const user = usersData[userId];
+            
+            // 1. Atualizar status da solicitação
+            await DB.update(`withdrawal_requests/${requestId}`, {
+                status: 'rejected',
+                reason: reason,
+                processedAt: Date.now(),
+                agentId: AGENT_ID
+            });
+
+            showAlert('withdrawalAlert', `❌ Saque para ${user.nickname} REJEITADO.`, 'danger');
+        }
+        
+        // ========== AGENTES ==========
+        function updateOperationalLimit() {
+            // A reserva do agente logado é fixa para esta simulação, mas pode ser ajustada via input
+            document.getElementById('operationalLimit').textContent = `R$ ${currentAgentReserve.toFixed(2)}`;
+        }
+        
+        // 1. Candidatar Usuário (Simula o início do processo)
+        async function candidatarUsuario() {
+            const userId = document.getElementById('candidateSelect').value;
+            if (!userId) {
+                showAlert('candidatureAlert', '⚠️ Selecione um usuário para candidatar.', 'danger');
+                return;
+            }
+            
+            const user = usersData[userId];
+            if (!user) return;
+            
+            // Simula que o admin está iniciando a candidatura
+            await DB.set(`candidatures/${userId}`, {
+                userId: userId,
+                nickname: user.nickname,
+                status: 'pending',
+                candidatadoEm: Date.now()
+            });
+            
+            showAlert('candidatureAlert', `✅ Candidatura de ${user.nickname} registrada. Verificando requisitos...`, 'info');
+            updateCandidateSelect();
+        }
+        
+        // 2. Atualizar Candidaturas Pendentes
+        function updatePendingCandidatures() {
+            const candidaturesDiv = document.getElementById('pendingCandidatures');
+            let html = '';
+            let pendingCount = 0;
+            
+            for (const [userId, candidature] of Object.entries(candidaturesData)) {
+                if (candidature.status === 'pending') {
+                    pendingCount++;
+                    html += `
+                        <div class="candidature-item">
+                            <p><strong>Candidato:</strong> ${candidature.nickname}</p>
+                            <p><strong>Data:</strong> ${new Date(candidature.candidatadoEm).toLocaleDateString('pt-BR')}</p>
+                            <div class="actions">
+                                <button class="btn" style="width: 100%;" onclick="processarCandidaturaAutomatica('${userId}')">Processar Validação Automática</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (pendingCount === 0) {
+                candidaturesDiv.innerHTML = '<p style="text-align: center; color: #666;">Nenhuma candidatura pendente.</p>';
+            } else {
+                candidaturesDiv.innerHTML = html;
+            }
+        }
+        
+        // 3. Lógica de Validação Automática e Aprovação
+        async function processarCandidaturaAutomatica(userId) {
+            const user = usersData[userId];
+            if (!user) return;
+            
+            // Simula a adição de campos necessários para a validação
+            // Em um sistema real, o usuário preencheria isso
+            user.documentoVerificado = true; 
+            user.termoAceito = true;
+            
+            const minSatGuarantee = LM.lmToSat(MIN_LM_GUARANTEE);
+
+            const requisitos = {
+                documentoVerificado: user.documentoVerificado === true,
+                carteiraAtiva: (user.balanceSat || 0) >= minSatGuarantee,
+                termoAceito: user.termoAceito === true
+            };
+            
+            // Verifica Histórico de Transações (mínimo de 5)
+            const transactions = await DB.get('transactions');
+            const historico = Object.values(transactions || {}).filter(tx => tx.userId === userId);
+            requisitos.historicoMinimo = historico.length >= 5;
+
+            const aprovado = Object.values(requisitos).every(v => v === true);
+            
+            let logMessage = `Candidatura de ${user.nickname} - Requisitos:<br>`;
+            for (const req in requisitos) {
+                logMessage += `- ${req}: ${requisitos[req] ? '✅' : '❌'}<br>`;
+            }
+
+            if (aprovado) {
+                // 1. Aprova o Agente
+                const newAgent = {
+                    userId: userId,
+                    nickname: user.nickname,
+                    status: "aprovado",
+                    aprovadoEm: Date.now(),
+                    // O limite operacional é o saldo atual do usuário (Depósito de Garantia)
+                    limiteOperacionalSat: user.balanceSat 
+                };
+                
+                await DB.set(`agents/${userId}`, newAgent);
+                
+                // 2. Remove da lista de candidaturas pendentes
+                await DB.set(`candidatures/${userId}`, null); 
+
+                LM.log(logMessage + `✅ Agente aprovado: ${user.nickname}. Limite: ${LM.formatLM(LM.satToLm(newAgent.limiteOperacionalSat), 4)} LM`, 'candidatureAlert');
+                showAlert('candidatureAlert', `✅ Agente ${user.nickname} APROVADO!`, 'success');
+                
+            } else {
+                // 1. Rejeita e move para status rejeitado
+                await DB.update(`candidatures/${userId}`, {
+                    status: 'rejected',
+                    motivo: logMessage,
+                    rejeitadoEm: Date.now()
+                });
+                
+                LM.log(logMessage + `❌ Candidato não atende aos requisitos`, 'candidatureAlert');
+                showAlert('candidatureAlert', `❌ Candidatura de ${user.nickname} REJEITADA.`, 'danger');
+            }
+            
+            updatePendingCandidatures();
+            updateCandidateSelect();
+            updateAgentFilter();
+        }
+
+        // ========== ALERT ==========
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            if (!message) {
+                alertDiv.innerHTML = '';
+                return;
+            }
+            alertDiv.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        }
+
+        // ========== ENTER NO LOGIN ==========
+        document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        LM.log('🔧 Sistema administrativo pronto');
+    </script>
+</body>
+</html>
